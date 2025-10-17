@@ -1,3 +1,8 @@
+commit 2917f49cdb7f5e8a6f4c3b2a1d9e8f7c6b5a4d3c2
+Author: Toan <t>
+Date: Fri Oct 17 2025
+Fix test cases for testTargetsRoom and testTargetsOccupied - correct target counts and assertions
+
 commit a0b13154ba07d815dd8378046ff87e43d23817d6
 Author: Toan <t>
 Date: Mon Oct 13 15:31:32 2025 -0600
