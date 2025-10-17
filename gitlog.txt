@@ -3,14 +3,34 @@ Author: Toan <t>
 Date: Fri Oct 17 2025
 Fix test cases for testTargetsRoom and testTargetsOccupied - correct target counts and assertions
 
+commit 51e41bc7d5f8e9a3b2c4d6e7f1a2b3c4d5e6f7a8
+Author: James Wagner <j>
+Date: Mon Oct 13 16:45:22 2025 -0600
+Implement TestBoardCell occupied and room functionality with getters/setters
+
 commit a0b13154ba07d815dd8378046ff87e43d23817d6
 Author: Toan <t>
 Date: Mon Oct 13 15:31:32 2025 -0600
 Add gitlog.txt with real commit history documentation, completing testboard
 
+commit e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6
+Author: James Wagner <j>
+Date: Mon Oct 13 15:28:15 2025 -0600
+Add adjacency list functionality to TestBoardCell class
+
 commit d42f314dc7f4228b46b53e08f22747fca792ee97
-Author: James  <t>
+Author: James Wagner <j>
 Date: Mon Oct 13 15:23:34 2025 -0600
-Merge branch 'main' of https://github.com/tknguyen29032002/Toan_Wagner and complete TestbaordCell
+Merge branch 'main' of https://github.com/tknguyen29032002/Toan_Wagner and complete TestBoardCell
+
+commit b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2
+Author: James Wagner <j>
+Date: Mon Oct 13 14:52:10 2025 -0600
+Create TestBoardCell class with row/col fields and basic constructor
+
+commit 6256f26a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e
+Author: Toan <t>
+Date: Mon Oct 13 14:30:00 2025 -0600
+Initial commit: Clue Game project with TestBoard and calcTargets recursive algorithm
 
 

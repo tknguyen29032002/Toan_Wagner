@@ -23,7 +23,7 @@ public class TestBoard {
 		visited = new HashSet<>();
 		calcAdjacencies();
 	}
-
+	//aloow the user to move to the adjacent cells
 	private void calcAdjacencies() {
 		for (int r = 0; r < ROWS; r++) {
 			for (int c = 0; c < COLS; c++) {
@@ -36,7 +36,7 @@ public class TestBoard {
 		}
 	}
 
-	
+	//calculate the targets depends on the start cell and the pathlength
 	public void calcTargets(TestBoardCell startCell, int pathlength) {
 		targets.clear();
 		visited.clear();
