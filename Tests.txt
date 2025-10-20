@@ -1,0 +1,34 @@
+Test Selection Rationale for FileInitTests.java
+
+Board Dimensions:
+- Selected 31 rows x 30 columns based on our custom layout
+- This is different from the 306 example which uses 25x24
+
+Room Labels Test:
+- Tested Atrium (A) - first room in our setup file
+- Tested Vault (V) - last room in our setup file
+- Tested Greenhouse (G), Observatory (O), Laboratory (L) - middle rooms to ensure proper parsing
+- Tested Walkway (W) - to verify space types are loaded correctly
+
+Door Direction Tests:
+- UP door: Row 6, Col 3 - Selected from Atrium's top door that opens upward to walkway
+- DOWN door: Row 9, Col 4 - Selected from walkway that opens down into Laboratory
+- LEFT door: Row 3, Col 6 - Selected from Atrium's door opening left
+- RIGHT door: Row 3, Col 10 - Selected from Greenhouse's door opening right
+- Non-door: Row 8, Col 8 - Walkway cell with no door to verify false case
+
+Door Count:
+- Counted all doors with symbols ^, v, <, > in the layout
+- Total: 17 doors (verified by manual inspection of CSV)
+
+Room Properties Tests:
+- Standard room cell: Vault at (26, 26) - tests basic room without special properties
+- Label cell: Atrium label at (1, 2) marked with # - tests label identification
+- Center cell: Atrium center at (3, 3) marked with * - tests room center identification
+- Secret passage: Atrium at (1, 1) with passage to Vault (AV) - tests secret passage parsing
+- Walkway: Cell at (8, 8) - verifies walkway is treated as room type
+- Unused space: Cell at (0, 0) marked with X - tests unused space handling
+
+The test cells were selected to cover all room types, all door directions, and various
+special cell properties (labels, centers, secret passages) across different rooms.
+

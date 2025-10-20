@@ -1,0 +1,13 @@
+// Rooms and room cards (custom board)
+Room, Atrium, A
+Room, Greenhouse, G
+Room, Observatory, O
+Room, Laboratory, L
+Room, Forge, F
+Room, Pantry, P
+Room, Theater, T
+Room, Studio, S
+Room, Vault, V
+// other spaces on board
+Space, Unused, X
+Space, Walkway, W
