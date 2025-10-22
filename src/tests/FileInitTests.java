@@ -13,7 +13,7 @@ import clueGame.Room;
 
 public class FileInitTests {
 	public static final int LEGEND_SIZE = 11;
-	public static final int NUM_ROWS = 31;
+	public static final int NUM_ROWS = 30;
 	public static final int NUM_COLUMNS = 30;
 
 	private static Board board;

@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import experiment.TestBoard;
 import experiment.TestBoardCell;
 
-/**
- * JUnit test class for TestBoard - tests adjacency lists and target calculation
- */
+
 public class BoardTestsExp {
     private TestBoard board;
 
@@ -18,10 +16,6 @@ public class BoardTestsExp {
     public void setUp() {
         board = new TestBoard();
     }
-
-    /* -------------------------
-     *  ADJACENCY TESTS
-     * ------------------------- */
 
     @Test
     public void testAdjacency0_0() {
@@ -134,7 +128,7 @@ public class BoardTestsExp {
 
     @Test
     public void testTargetsRoom() {
-        // Scenario 1: Room - player stops immediately upon entering
+        // Scenario 1: Room when player stops immediately upon entering
         board.getCell(1, 2).setRoom(true);
         
         TestBoardCell cell = board.getCell(0, 0);
