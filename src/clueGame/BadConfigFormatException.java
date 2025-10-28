@@ -10,4 +10,4 @@ public class BadConfigFormatException extends Exception {
 		super(message);
 	}
 }
-
+ 

@@ -12,11 +12,13 @@ public class BoardCell {
 	private boolean roomCenter;
 	private char secretPassage;
 	private Set<BoardCell> adjList;
+	private boolean isOccupied;
 	
 	public BoardCell() {
 		this.doorDirection = DoorDirection.NONE;
 		this.initial = 'W';
 		this.secretPassage = ' ';
+		this.isOccupied = false;
 	}
 	
 	public BoardCell(int row, int col, char initial) {
@@ -27,6 +29,7 @@ public class BoardCell {
 		this.roomLabel = false;
 		this.roomCenter = false;
 		this.secretPassage = ' ';
+		this.isOccupied = false;
 	}
 
 	public boolean isDoorway() {
@@ -89,7 +92,18 @@ public class BoardCell {
 	}
 	
 	public Set<BoardCell> getAdjList() {
+		if (adjList == null) {
+			adjList = new HashSet<>();
+		}
 		return adjList;
+	}
+	
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+	
+	public void setOccupied(boolean occupied) {
+		this.isOccupied = occupied;
 	}
 }
 
