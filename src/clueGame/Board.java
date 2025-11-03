@@ -311,37 +311,47 @@ public class Board {
 	 * @param cell the room center cell to calculate adjacencies for
 	 */
 	private void calcRoomCenterAdj(BoardCell cell) {
-		char roomInitial = cell.getInitial();
-		
-		// Add all doorways that lead into this room
+		addDoorwayAdjacencies(cell);
+		addSecretPassageAdjacency(cell);
+	}
+	
+	/**
+	 * Add all doorways that lead into the given room center to its adjacency list
+	 * @param roomCenter the room center cell to add doorway adjacencies for
+	 */
+	private void addDoorwayAdjacencies(BoardCell roomCenter) {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell potentialDoor = grid[row][col];
 				if (potentialDoor.isDoorway()) {
 					BoardCell doorTarget = getDoorTarget(potentialDoor);
 					// Check if this door points to this specific room center
-					if (doorTarget == cell) {
-						cell.addAdj(potentialDoor);
+					if (doorTarget == roomCenter) {
+						roomCenter.addAdj(potentialDoor);
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Add secret passage adjacency for the given room center if it exists
+	 * Only adds one secret passage per room
+	 * @param roomCenter the room center cell to add secret passage adjacency for
+	 */
+	private void addSecretPassageAdjacency(BoardCell roomCenter) {
+		char roomInitial = roomCenter.getInitial();
 		
-		// Check for secret passages - only add once per room
-		// Look for any cell in this room that has a secret passage
-		boolean secretPassageAdded = false;
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell roomCell = grid[row][col];
 				// If this cell is part of our room and has a secret passage
 				if (roomCell.getInitial() == roomInitial && roomCell.getSecretPassage() != NO_SECRET_PASSAGE) {
-					if (!secretPassageAdded) {
-						char targetRoomInitial = roomCell.getSecretPassage();
-						Room targetRoom = roomMap.get(targetRoomInitial);
-						if (targetRoom != null && targetRoom.getCenterCell() != null) {
-							cell.addAdj(targetRoom.getCenterCell());
-							secretPassageAdded = true;
-						}
+					char targetRoomInitial = roomCell.getSecretPassage();
+					Room targetRoom = roomMap.get(targetRoomInitial);
+					if (targetRoom != null && targetRoom.getCenterCell() != null) {
+						roomCenter.addAdj(targetRoom.getCenterCell());
+						return; // Only add one secret passage per room
 					}
 				}
 			}
