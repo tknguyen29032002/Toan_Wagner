@@ -31,14 +31,25 @@ public class Board {
 	private Set<BoardCell> visited;
 	private static Board theInstance = new Board();
 
+	/**
+	 * Private constructor to enforce singleton pattern
+	 */
 	private Board() {
 		super();
 	}
 
+	/**
+	 * Get the singleton instance of the Board
+	 * @return the single Board instance
+	 */
 	public static Board getInstance() {
 		return theInstance;
 	}
 
+	/**
+	 * Initialize the board by loading setup and layout configuration files
+	 * and calculating adjacencies for all cells
+	 */
 	public void initialize() {
 		try {
 			// Reset state for fresh initialization
@@ -55,11 +66,21 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Set the configuration file paths for the board
+	 * @param layoutFile the name of the layout configuration file
+	 * @param setupFile the name of the setup configuration file
+	 */
 	public void setConfigFiles(String layoutFile, String setupFile) {
 		layoutConfigFile = DATA_DIRECTORY + layoutFile;
 		setupConfigFile = DATA_DIRECTORY + setupFile;
 	}
 
+	/**
+	 * Load the setup configuration file to initialize rooms and spaces
+	 * @throws BadConfigFormatException if the setup file format is invalid
+	 * @throws FileNotFoundException if the setup file cannot be found
+	 */
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
@@ -105,6 +126,12 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Load the layout configuration file to initialize the board grid
+	 * Parses cell types, doors, room centers, labels, and secret passages
+	 * @throws BadConfigFormatException if the layout file format is invalid
+	 * @throws FileNotFoundException if the layout file cannot be found
+	 */
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
 		FileReader reader = new FileReader(layoutConfigFile);
 		Scanner scanner = new Scanner(reader);
@@ -189,6 +216,11 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Get the room associated with the given initial character
+	 * @param c the initial character of the room
+	 * @return the Room object, or an empty Room if not found
+	 */
 	public Room getRoom(char c) {
 		if (roomMap.containsKey(c)) {
 			return roomMap.get(c);
@@ -196,6 +228,11 @@ public class Board {
 		return new Room();
 	}
 
+	/**
+	 * Get the room associated with the given cell
+	 * @param cell the BoardCell to get the room for
+	 * @return the Room object, or an empty Room if not found
+	 */
 	public Room getRoom(BoardCell cell) {
 		if (cell != null) {
 			return getRoom(cell.getInitial());
@@ -203,14 +240,28 @@ public class Board {
 		return new Room();
 	}
 
+	/**
+	 * Get the number of rows in the board
+	 * @return the number of rows
+	 */
 	public int getNumRows() {
 		return numRows;
 	}
 
+	/**
+	 * Get the number of columns in the board
+	 * @return the number of columns
+	 */
 	public int getNumColumns() {
 		return numColumns;
 	}
 
+	/**
+	 * Get the cell at the specified row and column
+	 * @param row the row of the cell
+	 * @param col the column of the cell
+	 * @return the BoardCell at the specified location, or an empty cell if invalid
+	 */
 	public BoardCell getCell(int row, int col) {
 		if (isValidCell(row, col)) {
 			return grid[row][col];
@@ -228,7 +279,10 @@ public class Board {
 		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
 	
-	// Calculate adjacencies for all cells on the board
+	/**
+	 * Calculate adjacencies for all cells on the board
+	 * Sets up the adjacency list for walkway cells and room centers
+	 */
 	private void calcAdjacencies() {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
@@ -251,7 +305,11 @@ public class Board {
 		}
 	}
 	
-	// Calculate adjacencies for room center cells
+	/**
+	 * Calculate adjacencies for room center cells
+	 * Includes doorways that lead into the room and secret passages
+	 * @param cell the room center cell to calculate adjacencies for
+	 */
 	private void calcRoomCenterAdj(BoardCell cell) {
 		char roomInitial = cell.getInitial();
 		
@@ -290,7 +348,11 @@ public class Board {
 		}
 	}
 	
-	// Calculate adjacencies for walkway cells
+	/**
+	 * Calculate adjacencies for walkway cells
+	 * Handles regular walkways and doorways with direction-based adjacency rules
+	 * @param cell the walkway cell to calculate adjacencies for
+	 */
 	private void calcWalkwayAdj(BoardCell cell) {
 		int row = cell.getRow();
 		int col = cell.getCol();
@@ -327,7 +389,12 @@ public class Board {
 		}
 	}
 	
-	// Add adjacent walkway if valid
+	/**
+	 * Add a walkway cell to the adjacency list if it's valid and is a walkway
+	 * @param cell the cell to add the adjacency to
+	 * @param row the row of the potential adjacent cell
+	 * @param col the column of the potential adjacent cell
+	 */
 	private void addWalkwayAdj(BoardCell cell, int row, int col) {
 		if (isValidCell(row, col)) {
 			BoardCell adj = grid[row][col];
@@ -337,7 +404,11 @@ public class Board {
 		}
 	}
 	
-	// Get the room center that a door points to
+	/**
+	 * Get the room center that a door points to based on its direction
+	 * @param door the door cell to find the target for
+	 * @return the room center cell that the door leads to, or null if not found
+	 */
 	private BoardCell getDoorTarget(BoardCell door) {
 		if (!door.isDoorway()) return null;
 		
@@ -398,7 +469,12 @@ public class Board {
 		findAllTargets(startCell, pathLength);
 	}
 	
-	// Recursive method to find all targets
+	/**
+	 * Recursively find all target cells reachable from the current cell
+	 * Uses backtracking to explore all possible paths
+	 * @param cell the current cell being explored
+	 * @param numSteps the number of steps remaining
+	 */
 	private void findAllTargets(BoardCell cell, int numSteps) {
 		// Get adjacency list for current cell
 		Set<BoardCell> adjList = cell.getAdjList();
