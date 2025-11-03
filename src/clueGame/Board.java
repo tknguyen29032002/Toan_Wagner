@@ -65,45 +65,44 @@ public class Board {
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner scanner = new Scanner(reader);
 		
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine().trim();
-			
-			// Skip empty lines and comments
-			if (line.isEmpty() || line.startsWith("//")) {
-				continue;
+		try {
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine().trim();
+				
+				// Skip empty lines and comments
+				if (line.isEmpty() || line.startsWith("//")) {
+					continue;
+				}
+				
+				// Split by comma and trim each part
+				String[] parts = line.split(",");
+				if (parts.length != 3) {
+					throw new BadConfigFormatException("Invalid setup file format: " + line);
+				}
+				
+				String type = parts[0].trim();
+				String name = parts[1].trim();
+				String initialStr = parts[2].trim();
+				
+				// type is either "Room" or "Space"
+				if (!type.equals("Room") && !type.equals("Space")) {
+					throw new BadConfigFormatException("Invalid room type (must be 'Room' or 'Space'): " + line);
+				}
+				
+				// initial must be single character
+				if (initialStr.length() != 1) {
+					throw new BadConfigFormatException("Room initial must be single character: " + line);
+				}
+				
+				char initial = initialStr.charAt(0);
+				
+				// Create room and add to map
+				Room room = new Room(name);
+				roomMap.put(initial, room);
 			}
-			
-			// Split by comma and trim each part
-			String[] parts = line.split(",");
-			if (parts.length != 3) {
-				scanner.close();
-				throw new BadConfigFormatException("Invalid setup file format: " + line);
-			}
-//* couting room and walkway is the naother solution &*
-			String type = parts[0].trim();
-			String name = parts[1].trim();
-			String initialStr = parts[2].trim();
-			
-			// type is either "Room" or "Space"
-			if (!type.equals("Room") && !type.equals("Space")) {
-				scanner.close();
-				throw new BadConfigFormatException("Invalid room type (must be 'Room' or 'Space'): " + line);
-			}
-			
-			// initial must be single character
-			if (initialStr.length() != 1) {
-				scanner.close();
-				throw new BadConfigFormatException("Room initial must be single character: " + line);
-			}
-			
-			char initial = initialStr.charAt(0);
-			
-			// Create room and add to map
-			Room room = new Room(name);
-			roomMap.put(initial, room);
+		} finally {
+			scanner.close();
 		}
-		
-		scanner.close();
 	}
 
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
