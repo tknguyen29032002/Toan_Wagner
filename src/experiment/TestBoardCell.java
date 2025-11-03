@@ -59,7 +59,6 @@ public class TestBoardCell {
 	}
 	
 	/**
-	 Set whether this cell is occupied by another player
 	 @param isOccupied - true if cell is occupied
 	 */
 	public void setOccupied(boolean isOccupied) {
