@@ -4,6 +4,10 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class BoardCell {
+	// Constants
+	private static final char WALKWAY_INITIAL = 'W';
+	private static final char NO_SECRET_PASSAGE = ' ';
+	
 	private int row;
 	private int col;
 	private char initial;
@@ -16,8 +20,8 @@ public class BoardCell {
 	
 	public BoardCell() {
 		this.doorDirection = DoorDirection.NONE;
-		this.initial = 'W';
-		this.secretPassage = ' ';
+		this.initial = WALKWAY_INITIAL;
+		this.secretPassage = NO_SECRET_PASSAGE;
 		this.isOccupied = false;
 	}
 	
@@ -28,7 +32,7 @@ public class BoardCell {
 		this.doorDirection = DoorDirection.NONE;
 		this.roomLabel = false;
 		this.roomCenter = false;
-		this.secretPassage = ' ';
+		this.secretPassage = NO_SECRET_PASSAGE;
 		this.isOccupied = false;
 	}
 

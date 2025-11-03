@@ -10,6 +10,17 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class Board {
+	// Constants for cell types and special characters
+	private static final char WALKWAY_INITIAL = 'W';
+	private static final char LABEL_INDICATOR = '#';
+	private static final char CENTER_INDICATOR = '*';
+	private static final char DOOR_UP = '^';
+	private static final char DOOR_DOWN = 'v';
+	private static final char DOOR_LEFT = '<';
+	private static final char DOOR_RIGHT = '>';
+	private static final char NO_SECRET_PASSAGE = ' ';
+	private static final String DATA_DIRECTORY = "data/";
+	
 	private BoardCell[][] grid;
 	private int numRows;
 	private int numColumns;
@@ -45,8 +56,8 @@ public class Board {
 	}
 
 	public void setConfigFiles(String layoutFile, String setupFile) {
-		layoutConfigFile = "data/" + layoutFile;
-		setupConfigFile = "data/" + setupFile;
+		layoutConfigFile = DATA_DIRECTORY + layoutFile;
+		setupConfigFile = DATA_DIRECTORY + setupFile;
 	}
 
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
@@ -148,24 +159,24 @@ public class Board {
 					char secondChar = cellStr.charAt(1);
 					
 					switch (secondChar) {
-						case '#':  // Label cell
+						case LABEL_INDICATOR:  // Label cell
 							cell.setLabel(true);
 							roomMap.get(roomInitial).setLabelCell(cell);
 							break;
-						case '*':  // Center cell
+						case CENTER_INDICATOR:  // Center cell
 							cell.setRoomCenter(true);
 							roomMap.get(roomInitial).setCenterCell(cell);
 							break;
-						case '^':  // Door facing UP
+						case DOOR_UP:  // Door facing UP
 							cell.setDoorDirection(DoorDirection.UP);
 							break;
-						case 'v':  // Door facing DOWN
+						case DOOR_DOWN:  // Door facing DOWN
 							cell.setDoorDirection(DoorDirection.DOWN);
 							break;
-						case '<':  // Door facing LEFT
+						case DOOR_LEFT:  // Door facing LEFT
 							cell.setDoorDirection(DoorDirection.LEFT);
 							break;
-						case '>':  // Door facing RIGHT
+						case DOOR_RIGHT:  // Door facing RIGHT
 							cell.setDoorDirection(DoorDirection.RIGHT);
 							break;
 						default:   // Secret passage
@@ -215,7 +226,7 @@ public class Board {
 				BoardCell cell = grid[row][col];
 				
 				// Room cells that are not centers have no adjacencies
-				if (cell.getInitial() != 'W' && !cell.isRoomCenter()) {
+				if (cell.getInitial() != WALKWAY_INITIAL && !cell.isRoomCenter()) {
 					continue;
 				}
 				
@@ -224,7 +235,7 @@ public class Board {
 					calcRoomCenterAdj(cell);
 				}
 				// Walkway cells
-				else if (cell.getInitial() == 'W') {
+				else if (cell.getInitial() == WALKWAY_INITIAL) {
 					calcWalkwayAdj(cell);
 				}
 			}
@@ -256,7 +267,7 @@ public class Board {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell roomCell = grid[row][col];
 				// If this cell is part of our room and has a secret passage
-				if (roomCell.getInitial() == roomInitial && roomCell.getSecretPassage() != ' ') {
+				if (roomCell.getInitial() == roomInitial && roomCell.getSecretPassage() != NO_SECRET_PASSAGE) {
 					if (!secretPassageAdded) {
 						char targetRoomInitial = roomCell.getSecretPassage();
 						Room targetRoom = roomMap.get(targetRoomInitial);
@@ -311,7 +322,7 @@ public class Board {
 	private void addWalkwayAdj(BoardCell cell, int row, int col) {
 		if (row >= 0 && row < numRows && col >= 0 && col < numColumns) {
 			BoardCell adj = grid[row][col];
-			if (adj.getInitial() == 'W') {
+			if (adj.getInitial() == WALKWAY_INITIAL) {
 				cell.addAdj(adj);
 			}
 		}
@@ -343,7 +354,7 @@ public class Board {
 		}
 		
 		// Return the room center for this room
-		if (targetCell != null && targetCell.getInitial() != 'W') {
+		if (targetCell != null && targetCell.getInitial() != WALKWAY_INITIAL) {
 			Room room = roomMap.get(targetCell.getInitial());
 			if (room != null) {
 				return room.getCenterCell();
