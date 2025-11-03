@@ -234,10 +234,7 @@ public class Board {
 		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
 	
-	/**
-	 * Calculate adjacencies for all cells on the board
-	 * Sets up the adjacency list for walkway cells and room centers
-	 */
+	// Calculate adjacencies for walkways and room centers
 	private void calcAdjacencies() {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
@@ -260,20 +257,13 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Calculate adjacencies for room center cells
-	 * Includes doorways that lead into the room and secret passages
-	 * @param cell the room center cell to calculate adjacencies for
-	 */
+	// Calculate adjacencies for room center (doorways + secret passages)
 	private void calcRoomCenterAdj(BoardCell cell) {
 		addDoorwayAdjacencies(cell);
 		addSecretPassageAdjacency(cell);
 	}
 	
-	/**
-	 * Add all doorways that lead into the given room center to its adjacency list
-	 * @param roomCenter the room center cell to add doorway adjacencies for
-	 */
+	// Add all doorways that lead into this room center
 	private void addDoorwayAdjacencies(BoardCell roomCenter) {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
@@ -289,11 +279,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Add secret passage adjacency for the given room center if it exists
-	 * Only adds one secret passage per room
-	 * @param roomCenter the room center cell to add secret passage adjacency for
-	 */
+	// Add secret passage for room if one exists
 	private void addSecretPassageAdjacency(BoardCell roomCenter) {
 		char roomInitial = roomCenter.getInitial();
 		
@@ -313,11 +299,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Calculate adjacencies for walkway cells
-	 * Handles regular walkways and doorways with direction-based adjacency rules
-	 * @param cell the walkway cell to calculate adjacencies for
-	 */
+	// Calculate adjacencies for walkway cells including doorways
 	private void calcWalkwayAdj(BoardCell cell) {
 		int row = cell.getRow();
 		int col = cell.getCol();
@@ -354,12 +336,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Add a walkway cell to the adjacency list if it's valid and is a walkway
-	 * @param cell the cell to add the adjacency to
-	 * @param row the row of the potential adjacent cell
-	 * @param col the column of the potential adjacent cell
-	 */
+	// Add adjacent walkway if valid position and walkway type
 	private void addWalkwayAdj(BoardCell cell, int row, int col) {
 		if (isValidCell(row, col)) {
 			BoardCell adj = grid[row][col];
@@ -369,11 +346,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Get the room center that a door points to based on its direction
-	 * @param door the door cell to find the target for
-	 * @return the room center cell that the door leads to, or null if not found
-	 */
+	// Get room center that door points to based on direction
 	private BoardCell getDoorTarget(BoardCell door) {
 		if (!door.isDoorway()) return null;
 		
@@ -408,12 +381,7 @@ public class Board {
 		return null;
 	}
 	
-	/**
-	 * Calculate adjacency list for a cell at the given row and column
-	 * @param row the row of the cell
-	 * @param col the column of the cell
-	 * @return the set of adjacent cells
-	 */
+	// Return adjacency list for cell at given position
 	public Set<BoardCell> getAdjList(int row, int col) {
 		BoardCell cell = getCell(row, col);
 		if (cell != null && cell.getAdjList() != null) {
@@ -422,11 +390,7 @@ public class Board {
 		return new HashSet<BoardCell>();
 	}
 	
-	/**
-	 * Calculate all possible target cells from starting cell
-	 * @param startCell the starting cell
-	 * @param pathLength the number of steps to take
-	 */
+	// Calculate all possible targets from starting cell with given path length
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		targets = new HashSet<BoardCell>();
 		visited = new HashSet<BoardCell>();
@@ -434,12 +398,7 @@ public class Board {
 		findAllTargets(startCell, pathLength);
 	}
 	
-	/**
-	 * Recursively find all target cells reachable from the current cell
-	 * Uses backtracking to explore all possible paths
-	 * @param cell the current cell being explored
-	 * @param numSteps the number of steps remaining
-	 */
+	// Recursively find all targets using backtracking
 	private void findAllTargets(BoardCell cell, int numSteps) {
 		// Get adjacency list for current cell
 		Set<BoardCell> adjList = cell.getAdjList();
@@ -468,10 +427,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Get the set of target cells from the last calcTargets call
-	 * @return the set of target cells
-	 */
+	// Return target cells from last calcTargets call
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
