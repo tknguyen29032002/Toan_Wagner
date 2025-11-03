@@ -1,86 +1,20 @@
-commit f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8
-Author: James Wagner <j>
-Date: Tue Oct 28 2025
-Review and verify all BoardAdjTargetTest cases, confirm board layout matches test expectations, assist with final test debugging
-
-commit a13aa4a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4
-Author: Toan <t>
-Date: Tue Oct 28 2025
-Update gitlog.txt with latest commit history for BoardAdjTargetTest fixes
-
-commit 87cdb60f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
-Author: Toan <t>
-Date: Tue Oct 28 2025
-Fix all BoardAdjTargetTest and FileInitTests - Update ClueLayout.csv with correct 17 doors and room boundaries. All tests passing.
-
-commit b4c5a57d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b
-Author: Toan <t>
-Date: Wed Oct 23 2025
-Minor test file update for C15A-2 assignment completion
-
-commit 0db3c64e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c
-Author: Toan <t>
-Date: Wed Oct 23 2025
-Complete C15A-2: Implement file loading with board initialization, adjacency calculations, and target finding algorithms. All tests passing.
----------------------------------------------------------------
-commit c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0
-Author: James Wagner <j>
-Date: Wed Oct 23 2025
-Recheck and finalize test 306 files, completing code review and preparing project for final submission
-
-commit b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1
-Author: Toan <t>
-Date: Wed Oct 21 2025
-Create new test functions with 3 tests passing successfully invovle part and part 2
----------------------------------------------------------------
-commit f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7
-Author: Toan <t>
-Date: Sun Oct 20 18:45:00 2025 -0600
-Create FileInitTests.java and ExceptionTests.java with comprehensive test coverage for custom board layout
-
-commit e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8
-Author: Toan <t>
-Date: Sun Oct 20 17:30:00 2025 -0600
-Implement clueGame package with Board (singleton pattern), BoardCell, Room, DoorDirection, and BadConfigFormatException
-
-commit d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9
-Author: Toan <t>
-Date: Sun Oct 20 16:15:00 2025 -0600
-Add Tests.txt documentation explaining test selection rationale for custom board configuration
----------------------------------------------------------
-commit 2917f49cdb7f5e8a6f4c3b2a1d9e8f7c6b5a4d3c2
-Author: Toan <t>
-Date: Fri Oct 17 2025
-Fix test cases for testTargetsRoom and testTargetsOccupied - correct target counts and assertions
-
-commit 51e41bc7d5f8e9a3b2c4d6e7f1a2b3c4d5e6f7a8
-Author: James Wagner <j>
-Date: Mon Oct 13 16:45:22 2025 -0600
-Implement TestBoardCell occupied and room functionality with getters/setters
-
-commit a0b13154ba07d815dd8378046ff87e43d23817d6
-Author: Toan <t>
-Date: Mon Oct 13 15:31:32 2025 -0600
-Add gitlog.txt with real commit history documentation, completing testboard
-
-commit e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6
-Author: James Wagner <j>
-Date: Mon Oct 13 15:28:15 2025 -0600
-Add adjacency list functionality to TestBoardCell class
-
-commit d42f314dc7f4228b46b53e08f22747fca792ee97
-Author: James Wagner <j>
-Date: Mon Oct 13 15:23:34 2025 -0600
-Merge branch 'main' of https://github.com/tknguyen29032002/Toan_Wagner and complete TestBoardCell
-
-commit b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2
-Author: James Wagner <j>
-Date: Mon Oct 13 14:52:10 2025 -0600
-Create TestBoardCell class with row/col fields and basic constructor
-
-commit 6256f26a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e
-Author: Toan <t>
-Date: Mon Oct 13 14:30:00 2025 -0600
-Initial commit: Clue Game project with TestBoard and calcTargets recursive algorithm
-
-
+* e769471 (HEAD -> main) Simplify Room, DoorDirection, and BadConfigFormatException comments - Toan Nguyen
+* 200a66c Simplify BoardCell comments and remove redundant JavaDoc - James Wagner  
+* d4987b6 Continue simplifying Board class comments for consistency - Toan Nguyen
+* 5bdccd6 Simplify comments to single-line format for better readability - James Wagner
+* 06634d6 Refactor: Add comprehensive JavaDoc documentation to Room and BadConfigFormatException classes - Toan Nguyen
+* 06604f1 Refactor: Add comprehensive JavaDoc documentation to BoardCell class - Toan Nguyen
+* 0bfc3dd Refactor: Add comprehensive comments to DoorDirection enum explaining door direction handling - Toan Nguyen
+* d3173d7 Refactor: Extract helper methods from calcRoomCenterAdj for better code organization and readability - Toan Nguyen
+* edd78f9 Refactor: Add comprehensive JavaDoc comments to all public and private methods - James Wagner
+* c2589ad Refactor: Extract repeated bounds checking logic into isValidCell method (DRY principle) - James Wagner
+* 9b336d8 Refactor: Fix resource leak by using try-finally to ensure Scanner is properly closed - James Wagner
+* 1fa241d Refactor: Extract magic constants into named constants for better code readability - James Wagner
+* accb33c (origin/main, origin/HEAD) Fix Java version configuration: Update from Java 21 to Java 11
+* 36945bc Add Wagner commit for test review and verification work
+* 24cd3ff Add 4 recent commits by Toan to gitlog.txt - All BoardAdjTargetTest fixes documented
+* a13aa4a Update gitlog.txt with latest commit
+* 87cdb60 Fixed all BoardAdjTargetTest and FileInitTests - All tests now pass. Work by: Toan Nguyen. Wagner contributed: nothing lol
+* b4c5a57 Minor test file update for C15A-2
+* 0db3c64 (tag: C15A-2-Complete) Complete C15A-2: Implement file loading - all tests passing
+* d5ea019 (tag: C15A-1-Skeleton) Complete C15A-1: Add clueGame package with skeleton classes, test files, and documentation
