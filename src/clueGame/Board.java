@@ -212,10 +212,20 @@ public class Board {
 	}
 
 	public BoardCell getCell(int row, int col) {
-		if (row >= 0 && row < numRows && col >= 0 && col < numColumns) {
+		if (isValidCell(row, col)) {
 			return grid[row][col];
 		}
 		return new BoardCell();
+	}
+	
+	/**
+	 * Check if the given row and column are within valid bounds
+	 * @param row the row to check
+	 * @param col the column to check
+	 * @return true if the cell is within bounds, false otherwise
+	 */
+	private boolean isValidCell(int row, int col) {
+		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
 	
 	// Calculate adjacencies for all cells on the board
@@ -319,7 +329,7 @@ public class Board {
 	
 	// Add adjacent walkway if valid
 	private void addWalkwayAdj(BoardCell cell, int row, int col) {
-		if (row >= 0 && row < numRows && col >= 0 && col < numColumns) {
+		if (isValidCell(row, col)) {
 			BoardCell adj = grid[row][col];
 			if (adj.getInitial() == WALKWAY_INITIAL) {
 				cell.addAdj(adj);
