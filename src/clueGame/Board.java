@@ -31,25 +31,17 @@ public class Board {
 	private Set<BoardCell> visited;
 	private static Board theInstance = new Board();
 
-	/**
-	 * Private constructor to enforce singleton pattern
-	 */
+	// Private constructor for singleton pattern
 	private Board() {
 		super();
 	}
 
-	/**
-	 * Get the singleton instance of the Board
-	 * @return the single Board instance
-	 */
+	// Return the singleton Board instance
 	public static Board getInstance() {
 		return theInstance;
 	}
 
-	/**
-	 * Initialize the board by loading setup and layout configuration files
-	 * and calculating adjacencies for all cells
-	 */
+	// Initialize board: load configs and calculate adjacencies
 	public void initialize() {
 		try {
 			// Reset state for fresh initialization
@@ -66,21 +58,13 @@ public class Board {
 		}
 	}
 
-	/**
-	 * Set the configuration file paths for the board
-	 * @param layoutFile the name of the layout configuration file
-	 * @param setupFile the name of the setup configuration file
-	 */
+	// Set config file paths by prepending data directory
 	public void setConfigFiles(String layoutFile, String setupFile) {
 		layoutConfigFile = DATA_DIRECTORY + layoutFile;
 		setupConfigFile = DATA_DIRECTORY + setupFile;
 	}
 
-	/**
-	 * Load the setup configuration file to initialize rooms and spaces
-	 * @throws BadConfigFormatException if the setup file format is invalid
-	 * @throws FileNotFoundException if the setup file cannot be found
-	 */
+	// Load setup config file to initialize rooms and spaces
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
@@ -126,12 +110,7 @@ public class Board {
 		}
 	}
 
-	/**
-	 * Load the layout configuration file to initialize the board grid
-	 * Parses cell types, doors, room centers, labels, and secret passages
-	 * @throws BadConfigFormatException if the layout file format is invalid
-	 * @throws FileNotFoundException if the layout file cannot be found
-	 */
+	// Load layout config to initialize grid with doors, centers, labels, and passages
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
 		FileReader reader = new FileReader(layoutConfigFile);
 		Scanner scanner = new Scanner(reader);
@@ -216,11 +195,7 @@ public class Board {
 		}
 	}
 
-	/**
-	 * Get the room associated with the given initial character
-	 * @param c the initial character of the room
-	 * @return the Room object, or an empty Room if not found
-	 */
+	// Get room by initial character, return empty room if not found
 	public Room getRoom(char c) {
 		if (roomMap.containsKey(c)) {
 			return roomMap.get(c);
@@ -228,11 +203,7 @@ public class Board {
 		return new Room();
 	}
 
-	/**
-	 * Get the room associated with the given cell
-	 * @param cell the BoardCell to get the room for
-	 * @return the Room object, or an empty Room if not found
-	 */
+	// Get room for the given cell
 	public Room getRoom(BoardCell cell) {
 		if (cell != null) {
 			return getRoom(cell.getInitial());
@@ -240,28 +211,17 @@ public class Board {
 		return new Room();
 	}
 
-	/**
-	 * Get the number of rows in the board
-	 * @return the number of rows
-	 */
+	// Return number of rows on board
 	public int getNumRows() {
 		return numRows;
 	}
 
-	/**
-	 * Get the number of columns in the board
-	 * @return the number of columns
-	 */
+	// Return number of columns on board
 	public int getNumColumns() {
 		return numColumns;
 	}
 
-	/**
-	 * Get the cell at the specified row and column
-	 * @param row the row of the cell
-	 * @param col the column of the cell
-	 * @return the BoardCell at the specified location, or an empty cell if invalid
-	 */
+	// Get cell at position, return empty cell if out of bounds
 	public BoardCell getCell(int row, int col) {
 		if (isValidCell(row, col)) {
 			return grid[row][col];
@@ -269,12 +229,7 @@ public class Board {
 		return new BoardCell();
 	}
 	
-	/**
-	 * Check if the given row and column are within valid bounds
-	 * @param row the row to check
-	 * @param col the column to check
-	 * @return true if the cell is within bounds, false otherwise
-	 */
+	// Check if row and column are within bounds
 	private boolean isValidCell(int row, int col) {
 		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
