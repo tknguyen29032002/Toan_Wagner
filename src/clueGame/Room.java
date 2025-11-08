@@ -5,13 +5,16 @@ public class Room {
 	private String name;
 	private BoardCell centerCell;
 	private BoardCell labelCell;
+	private String type;
 	
 	public Room() {
 		this.name = "";
+		this.type = "";
 	}
 	
-	public Room(String name) {
+	public Room(String name, String Type) {
 		this.name = name;
+		this.type = Type;
 	}
 
 	public String getName() {
@@ -36,6 +39,10 @@ public class Room {
 	
 	public void setLabelCell(BoardCell cell) {
 		this.labelCell = cell;
+	}
+	
+	public String getType() { 
+		return type; 
 	}
 }
 

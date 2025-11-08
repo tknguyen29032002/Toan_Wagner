@@ -5,9 +5,11 @@ import java.io.FileReader;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 public class Board {
 	// Constants for cell types and special characters
@@ -30,6 +32,12 @@ public class Board {
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	private static Board theInstance = new Board();
+	
+	private List<Player> players;
+    private List<String> personNames;
+    private List<String> weaponNames;
+    private List<Card> deck;
+    private Solution theAnswer;
 
 	// Private constructor for singleton pattern
 	private Board() {
@@ -50,6 +58,12 @@ public class Board {
 			targets = null;
 			visited = null;
 			
+			players = new ArrayList<>();
+            personNames = new ArrayList<>();
+            weaponNames = new ArrayList<>();
+            deck = null;
+            theAnswer = null;
+			
 			loadSetupConfig();
 			loadLayoutConfig();
 			calcAdjacencies();
@@ -67,6 +81,11 @@ public class Board {
 	// Load setup config file to initialize rooms and spaces
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<>();
+		
+		players = new ArrayList<>();
+		personNames = new ArrayList<>();
+		weaponNames = new ArrayList<>();
+		
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner scanner = new Scanner(reader);
 		
@@ -78,35 +97,56 @@ public class Board {
 				if (line.isEmpty() || line.startsWith("//")) {
 					continue;
 				}
-				
 				// Split by comma and trim each part
 				String[] parts = line.split(",");
-				if (parts.length != 3) {
+				if (parts.length < 2) {
 					throw new BadConfigFormatException("Invalid setup file format: " + line);
 				}
-				
 				String type = parts[0].trim();
 				String name = parts[1].trim();
-				String initialStr = parts[2].trim();
-				
-				// type is either "Room" or "Space"
-				if (!type.equals("Room") && !type.equals("Space")) {
-					throw new BadConfigFormatException("Invalid room type (must be 'Room' or 'Space'): " + line);
+				switch (type) {
+					case "Room":
+						//same logic as "Space"
+					case "Space":
+						if (parts.length != 3) throw new BadConfigFormatException("Invalid Room/Space: " + line);
+						String initialStr = parts[2].trim();
+						// initial must be single character
+						if (initialStr.length() != 1) throw new BadConfigFormatException("Initial must be single char: " + line);
+						char initial = initialStr.charAt(0);
+						// Create room and add to map
+						Room room = new Room(name, type);
+						roomMap.put(initial, room);
+						break;
+						
+					case "Person":
+						if (parts.length != 6) throw new BadConfigFormatException("Invalid Person: " + line);
+						String colorStr = parts[2].trim();
+						int row = Integer.parseInt(parts[3].trim());
+						int col = Integer.parseInt(parts[4].trim());
+						String playerType = parts[5].trim();
+						Player player;
+						if (playerType.equals("Human")) {
+							player = new HumanPlayer(name, colorStr, row, col);
+						} else if (playerType.equals("Computer")) {
+							player = new ComputerPlayer(name, colorStr, row, col);
+						} else {
+							throw new BadConfigFormatException("Invalid player type: " + playerType);
+						}
+						players.add(player);
+						personNames.add(name);
+						break;
+						
+					case "Weapon":
+						if (parts.length != 2) throw new BadConfigFormatException("Invalid Weapon: " + line);
+						weaponNames.add(name);
+						break;
+						
+					default:
+						throw new BadConfigFormatException("Invalid type: " + type);
 				}
-				
-				// initial must be single character
-				if (initialStr.length() != 1) {
-					throw new BadConfigFormatException("Room initial must be single character: " + line);
-				}
-				
-				char initial = initialStr.charAt(0);
-				
-				// Create room and add to map
-				Room room = new Room(name);
-				roomMap.put(initial, room);
 			}
 		} finally {
-			scanner.close();
+		scanner.close();
 		}
 	}
 
@@ -152,7 +192,7 @@ public class Board {
 				char roomInitial = cellStr.charAt(0);
 				
 				// Validate room exists in setup
-				if (!roomMap.containsKey(roomInitial)) {
+				if (roomInitial != WALKWAY_INITIAL && !roomMap.containsKey(roomInitial)) {
 					throw new BadConfigFormatException("Room '" + roomInitial + "' not found in setup file");
 				}
 				
@@ -194,7 +234,71 @@ public class Board {
 			}
 		}
 	}
+	
+	//creates the deck of 21 cards (or however many is in setup.txt)
+	public void createDeck() {
+        List<Card> roomCards = new ArrayList<>();
+        List<Card> personCards = new ArrayList<>();
+        List<Card> weaponCards = new ArrayList<>();
 
+        for (Room room : roomMap.values()) {
+            if ("Room".equals(room.getType()) && !room.getName().isEmpty()) {
+                roomCards.add(new Card(room.getName(), CardType.ROOM));
+            }
+        }
+
+        for (String person : personNames) {
+            personCards.add(new Card(person, CardType.PERSON));
+        }
+
+        for (String weapon : weaponNames) {
+            weaponCards.add(new Card(weapon, CardType.WEAPON));
+        }
+
+        deck = new ArrayList<>();
+        deck.addAll(roomCards);
+        deck.addAll(personCards);
+        deck.addAll(weaponCards);
+    }
+
+	//deal cards to players 6
+    public void dealCards() {
+        if (deck == null) createDeck();
+
+        List<Card> roomCards = new ArrayList<>();
+        List<Card> personCards = new ArrayList<>();
+        List<Card> weaponCards = new ArrayList<>();
+
+        for (Card c : deck) {
+            switch (c.getType()) {
+                case ROOM: roomCards.add(c); break;
+                case PERSON: personCards.add(c); break;
+                case WEAPON: weaponCards.add(c); break;
+            }
+        }
+
+        Collections.shuffle(roomCards);
+        Collections.shuffle(personCards);
+        Collections.shuffle(weaponCards);
+
+        Card room = roomCards.remove(0);
+        Card person = personCards.remove(0);
+        Card weapon = weaponCards.remove(0);
+        theAnswer = new Solution(person, weapon, room);
+
+        List<Card> remainingDeck = new ArrayList<>();
+        remainingDeck.addAll(roomCards);
+        remainingDeck.addAll(personCards);
+        remainingDeck.addAll(weaponCards);
+        Collections.shuffle(remainingDeck);
+
+        int playerIdx = 0;
+        for (Card c : remainingDeck) {
+            players.get(playerIdx).updateHand(c);
+            playerIdx = (playerIdx + 1) % players.size();
+        }
+    }
+    
 	// Get room by initial character, return empty room if not found
 	public Room getRoom(char c) {
 		if (roomMap.containsKey(c)) {
@@ -431,5 +535,22 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
+	
+	// Test getters
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public List<String> getWeaponNames() {
+        return weaponNames;
+    }
+
+    public List<Card> getDeck() {
+        return new ArrayList<>(deck); // Copy for test
+    }
+
+    public Solution getTheAnswer() {
+        return theAnswer;
+    }
 }
 

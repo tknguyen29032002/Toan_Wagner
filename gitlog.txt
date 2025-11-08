@@ -1,4 +1,8 @@
-* e769471 (HEAD -> main) Simplify Room, DoorDirection, and BadConfigFormatException comments - Toan Nguyen
+* b07afbe (HEAD -> master) fixed all fails - James9123 <jamesbryanwagner@gmail.com>
+* 323b6fd fixed 2 of 3 fails - James9123 <jamesbryanwagner@gmail.com>
+* eb507db junit test added - James9123 <jamesbryanwagner@gmail.com>
+* dfc7d47 added uml - Author: Toan Nguyen
+* e769471 Simplify Room, DoorDirection, and BadConfigFormatException comments - Toan Nguyen
 * 200a66c Simplify BoardCell comments and remove redundant JavaDoc - James Wagner  
 * d4987b6 Continue simplifying Board class comments for consistency - Toan Nguyen
 * 5bdccd6 Simplify comments to single-line format for better readability - James Wagner
