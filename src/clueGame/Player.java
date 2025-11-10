@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Player {
     private String name;
@@ -33,6 +34,35 @@ public abstract class Player {
 
     public void updateHand(Card card) {
         hand.add(card);
+    }
+    
+    // Try to disprove suggestion with cards in hand, return matching card or null (random if multiple)
+    public Card disproveSuggestion(Solution suggestion) {
+        List<Card> matchingCards = new ArrayList<>();
+        
+        // Check each card in hand for a match
+        for (Card card : hand) {
+            if (card.equals(suggestion.getPerson()) ||
+                card.equals(suggestion.getWeapon()) ||
+                card.equals(suggestion.getRoom())) {
+                matchingCards.add(card);
+            }
+        }
+        
+        // If no matching cards, return null
+        if (matchingCards.isEmpty()) {
+            return null;
+        }
+        
+        // If one matching card, return it
+        if (matchingCards.size() == 1) {
+            return matchingCards.get(0);
+        }
+        
+        // If multiple matching cards, choose randomly
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(matchingCards.size());
+        return matchingCards.get(randomIndex);
     }
 
     // Getters

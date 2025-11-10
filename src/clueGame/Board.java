@@ -536,6 +536,39 @@ public class Board {
 		return targets;
 	}
 	
+	// Check if accusation matches theAnswer
+    public boolean checkAccusation(Solution accusation) {
+        if (theAnswer == null || accusation == null) {
+            return false;
+        }
+        
+        return theAnswer.getPerson().equals(accusation.getPerson()) &&
+               theAnswer.getWeapon().equals(accusation.getWeapon()) &&
+               theAnswer.getRoom().equals(accusation.getRoom());
+    }
+    
+    // Handle suggestion by querying players in order, return card that disproves or null
+    public Card handleSuggestion(Player accuser, Solution suggestion) {
+        // Find the accuser's index in the player list
+        int accuserIndex = players.indexOf(accuser);
+        if (accuserIndex == -1) {
+            return null; // Accuser not in player list
+        }
+        
+        // Query each player in order, starting after the accuser
+        for (int i = 1; i < players.size(); i++) {
+            int currentIndex = (accuserIndex + i) % players.size();
+            Player currentPlayer = players.get(currentIndex);
+            
+            Card disproofCard = currentPlayer.disproveSuggestion(suggestion);
+            if (disproofCard != null) {
+                return disproofCard; // First player to disprove
+            }
+        }
+        
+        return null; // No one could disprove
+    }
+    
 	// Test getters
     public List<Player> getPlayers() {
         return players;
@@ -544,6 +577,10 @@ public class Board {
     public List<String> getWeaponNames() {
         return weaponNames;
     }
+    
+    public List<String> getPersonNames() {
+        return personNames;
+    }
 
     public List<Card> getDeck() {
         return new ArrayList<>(deck); // Copy for test
@@ -551,6 +588,19 @@ public class Board {
 
     public Solution getTheAnswer() {
         return theAnswer;
+    }
+    
+    // Test helpers
+    public void setTheAnswer(Solution answer) {
+        this.theAnswer = answer;
+    }
+    
+    public void clearPlayers() {
+        players.clear();
+    }
+    
+    public void addPlayer(Player player) {
+        players.add(player);
     }
 }
 
