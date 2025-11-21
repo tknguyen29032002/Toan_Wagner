@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Map;
@@ -11,7 +12,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 
-public class Board {
+import javax.swing.JPanel;
+
+public class Board extends JPanel {
 	// Constants for cell types and special characters
 	private static final char WALKWAY_INITIAL = 'W';
 	private static final char LABEL_INDICATOR = '#';
@@ -121,8 +124,8 @@ public class Board {
 					case "Person":
 						if (parts.length != 6) throw new BadConfigFormatException("Invalid Person: " + line);
 						String colorStr = parts[2].trim();
-						int row = Integer.parseInt(parts[3].trim());
-						int col = Integer.parseInt(parts[4].trim());
+						int col = Integer.parseInt(parts[3].trim()); // x value (column)
+						int row = Integer.parseInt(parts[4].trim()); // y value (row)
 						String playerType = parts[5].trim();
 						Player player;
 						if (playerType.equals("Human")) {
@@ -569,6 +572,42 @@ public class Board {
         return null; // No one could disprove
     }
     
+    // Helper class to return both card and player who showed it
+    public static class SuggestionResult {
+        private Card card;
+        private Player player;
+        
+        public SuggestionResult(Card card, Player player) {
+            this.card = card;
+            this.player = player;
+        }
+        
+        public Card getCard() { return card; }
+        public Player getPlayer() { return player; }
+    }
+    
+    // Handle suggestion and return both the card and who showed it
+    public SuggestionResult handleSuggestionWithOwner(Player accuser, Solution suggestion) {
+        // Find the accuser's index in the player list
+        int accuserIndex = players.indexOf(accuser);
+        if (accuserIndex == -1) {
+            return null; // Accuser not in player list
+        }
+        
+        // Query each player in order, starting after the accuser
+        for (int i = 1; i < players.size(); i++) {
+            int currentIndex = (accuserIndex + i) % players.size();
+            Player currentPlayer = players.get(currentIndex);
+            
+            Card disproofCard = currentPlayer.disproveSuggestion(suggestion);
+            if (disproofCard != null) {
+                return new SuggestionResult(disproofCard, currentPlayer);
+            }
+        }
+        
+        return null; // No one could disprove
+    }
+    
 	// Test getters
     public List<Player> getPlayers() {
         return players;
@@ -599,8 +638,46 @@ public class Board {
         players.clear();
     }
     
-    public void addPlayer(Player player) {
+	public void addPlayer(Player player) {
         players.add(player);
+    }
+    
+    // Paint component method called by Swing to draw the board
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        // Calculate cell dimensions based on panel size
+        int width = getWidth();
+        int height = getHeight();
+        int cellWidth = width / numColumns;
+        int cellHeight = height / numRows;
+        
+        // Draw all cells
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numColumns; col++) {
+                grid[row][col].draw(g, cellWidth, cellHeight);
+            }
+        }
+        
+        // Draw room names
+        for (Room room : roomMap.values()) {
+            room.draw(g, cellWidth, cellHeight);
+        }
+        
+        // Draw players with offset handling for multiple players in same cell
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            // Calculate offset based on how many other players are in this cell
+            int offsetIndex = 0;
+            for (int j = 0; j < i; j++) {
+                Player otherPlayer = players.get(j);
+                if (otherPlayer.getRow() == player.getRow() && otherPlayer.getCol() == player.getCol()) {
+                    offsetIndex++;
+                }
+            }
+            player.draw(g, cellWidth, cellHeight, offsetIndex);
+        }
     }
 }
 
