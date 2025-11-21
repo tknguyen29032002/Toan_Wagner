@@ -1,24 +1,20 @@
-* b07afbe (HEAD -> master) fixed all fails - James9123 <jamesbryanwagner@gmail.com>
-* 323b6fd fixed 2 of 3 fails - James9123 <jamesbryanwagner@gmail.com>
-* eb507db junit test added - James9123 <jamesbryanwagner@gmail.com>
-* dfc7d47 added uml - Author: Toan Nguyen
-* e769471 Simplify Room, DoorDirection, and BadConfigFormatException comments - Toan Nguyen
-* 200a66c Simplify BoardCell comments and remove redundant JavaDoc - James Wagner  
-* d4987b6 Continue simplifying Board class comments for consistency - Toan Nguyen
-* 5bdccd6 Simplify comments to single-line format for better readability - James Wagner
-* 06634d6 Refactor: Add comprehensive JavaDoc documentation to Room and BadConfigFormatException classes - Toan Nguyen
-* 06604f1 Refactor: Add comprehensive JavaDoc documentation to BoardCell class - Toan Nguyen
-* 0bfc3dd Refactor: Add comprehensive comments to DoorDirection enum explaining door direction handling - Toan Nguyen
-* d3173d7 Refactor: Extract helper methods from calcRoomCenterAdj for better code organization and readability - Toan Nguyen
-* edd78f9 Refactor: Add comprehensive JavaDoc comments to all public and private methods - James Wagner
-* c2589ad Refactor: Extract repeated bounds checking logic into isValidCell method (DRY principle) - James Wagner
-* 9b336d8 Refactor: Fix resource leak by using try-finally to ensure Scanner is properly closed - James Wagner
-* 1fa241d Refactor: Extract magic constants into named constants for better code readability - James Wagner
-* accb33c (origin/main, origin/HEAD) Fix Java version configuration: Update from Java 21 to Java 11
-* 36945bc Add Wagner commit for test review and verification work
-* 24cd3ff Add 4 recent commits by Toan to gitlog.txt - All BoardAdjTargetTest fixes documented
-* a13aa4a Update gitlog.txt with latest commit
-* 87cdb60 Fixed all BoardAdjTargetTest and FileInitTests - All tests now pass. Work by: Toan Nguyen. Wagner contributed: nothing lol
-* b4c5a57 Minor test file update for C15A-2
-* 0db3c64 (tag: C15A-2-Complete) Complete C15A-2: Implement file loading - all tests passing
-* d5ea019 (tag: C15A-1-Skeleton) Complete C15A-1: Add clueGame package with skeleton classes, test files, and documentation
+* c1d9de9 Update compiled class files for GUI integration - Toan <t>
+* c73f095 Add code review documentation and Next button flowchart for planning - James Wagner - James Wagner <jamesbryanwagner@gmail.com>
+* 3cd4fbc Remove old GUI_Example.java - replaced by integrated ClueGame GUI - James Wagner - James Wagner <jamesbryanwagner@gmail.com>
+* 8b98830 Create KnownCardsPanel with color-coded card tracking for People, Rooms, and Weapons - James Wagner - James Wagner <jamesbryanwagner@gmail.com>
+* 937f6ab Create GameControlPanel with turn control, roll display, and guess sections - James Wagner - James Wagner <jamesbryanwagner@gmail.com>
+* 0f6fd69 Update custom board layout and setup with proper player starting positions - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* 8606863 Update BoardCell with draw method for custom cell rendering in GUI - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* 26b5d96 Update Room class with getColor method for room display in GUI - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* 4330b72 Update Player and HumanPlayer classes with seen cards tracking for GUI - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* ba6fe56 Update Board class with paintComponent for GUI rendering and board display - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* 212a92c Add main ClueGame class with GUI integration and welcome dialog - Toan Nguyen - Toan Nguyen <toannguyen@example.com>
+* 6e16931 Implement Known Cards Panel (C21A-2) with color-coded player tracking - Toan <t>
+* 63146e3 Implement Clue Player 2: card processing and computer AI logic - Toan <t>
+* 9039801 Add files via upload - James9123 <40583101+James9123@users.noreply.github.com>
+* d6acf60 Update gitlog.txt with refactoring commits - 4 by Toan, 4 by James - Toan Nguyen <tnguyen29032002@gmail.com>
+* b0d20b0 Simplify Room, DoorDirection, and BadConfigFormatException comments - Toan Nguyen <tnguyen29032002@gmail.com>
+* 7d5d401 Simplify BoardCell comments and remove redundant JavaDoc - James Wagner <james_wagner@mines.edu>
+* 615210d Continue simplifying Board class comments for consistency - Toan Nguyen <tnguyen29032002@gmail.com>
+* dee2e7d Simplify comments to single-line format for better readability - James Wagner <james_wagner@mines.edu>
+* d2d76fa Refactor: Add comprehensive JavaDoc documentation to Room and BadConfigFormatException classes - Toan Nguyen <tnguyen29032002@gmail.com>
