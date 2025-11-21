@@ -2,12 +2,10 @@ package gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -223,65 +221,7 @@ public class KnownCardsPanel extends JPanel {
 		return field;
 	}
 	
-	/**
-	 * Main method to test the Known Cards Panel
-	 * Demonstrates the panel with various cards and color coding
-	 * @param args Command line arguments (not used)
-	 */
-	public static void main(String[] args) {
-		// Create the panel
-		KnownCardsPanel panel = new KnownCardsPanel();
-		
-		// Create test players with different colors
-		Player player1 = new clueGame.ComputerPlayer("Colonel Mustard", "yellow", 0, 0);
-		Player player2 = new clueGame.ComputerPlayer("Mrs. White", "white", 0, 0);
-		Player player3 = new clueGame.ComputerPlayer("Mr. Green", "green", 0, 0);
-		Player player4 = new clueGame.ComputerPlayer("Mrs. Peacock", "blue", 0, 0);
-		Player player5 = new clueGame.ComputerPlayer("Professor Plum", "purple", 0, 0);
-		
-		// Create human player's hand
-		List<Card> hand = new ArrayList<>();
-		hand.add(new Card("Miss Scarlett", CardType.PERSON));
-		hand.add(new Card("Hall", CardType.ROOM));
-		hand.add(new Card("Lead Pipe", CardType.WEAPON));
-		
-		// Create seen cards with player associations (color-coded)
-		Map<Card, Player> seenCards = new HashMap<>();
-		seenCards.put(new Card("Colonel Mustard", CardType.PERSON), player1);
-		seenCards.put(new Card("Mrs. White", CardType.PERSON), player2);
-		seenCards.put(new Card("Mrs. Peacock", CardType.PERSON), player4);
-		seenCards.put(new Card("Lounge", CardType.ROOM), player2);
-		seenCards.put(new Card("Study", CardType.ROOM), player3);
-		seenCards.put(new Card("Conservatory", CardType.ROOM), player4);
-		seenCards.put(new Card("Billiard Room", CardType.ROOM), player3);
-		seenCards.put(new Card("Library", CardType.ROOM), player5);
-		seenCards.put(new Card("Candlestick", CardType.WEAPON), player4);
-		seenCards.put(new Card("Dagger", CardType.WEAPON), player5);
-		seenCards.put(new Card("Revolver", CardType.WEAPON), player5);
-		
-		// Update the panel with all data
-		panel.updatePanel(hand, seenCards);
-		
-		// Create and configure the frame
-		JFrame frame = new JFrame();
-		frame.setContentPane(panel);
-		frame.setSize(220, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Clue - Known Cards Panel");
-		frame.setVisible(true);
-		
-		// Demonstrate dynamic update after 3 seconds
-		new Thread(() -> {
-			try {
-				Thread.sleep(3000);
-				// Add more seen cards to show dynamic update
-				seenCards.put(new Card("Wrench", CardType.WEAPON), player1);
-				seenCards.put(new Card("Dining Room", CardType.ROOM), player1);
-				panel.updatePanel(hand, seenCards);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}).start();
-	}
+	// Note: Test main() method removed to avoid confusion with actual game
+	// The panel is now only used within ClueGame.java
 }
 
