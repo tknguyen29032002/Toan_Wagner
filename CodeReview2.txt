@@ -1,0 +1,89 @@
+CODE REVIEW 2 - CLUE GAME
+Team: Nguyen & Wagner
+Date: November 21, 2025
+
+================================================================================
+AREAS FOR REVIEW
+================================================================================
+
+1. BOARD CLASS - Game Setup & Card Dealing (Board.java lines 243-304)
+   Focus: createDeck() and dealCards() methods
+   Questions:
+   - Is the random card selection logic clear?
+   - Should we validate deck size before dealing?
+   - Any edge cases we missed?
+
+2. PLAYER SUGGESTION SYSTEM (Player.java lines 40-66)
+   Focus: disproveSuggestion() method
+   Questions:
+   - Is the random selection when multiple cards match implemented correctly?
+   - Should we add logging for debugging?
+   - Any performance concerns?
+
+3. ADJACENCY CALCULATION (Board.java lines 345-490)
+   Focus: calcAdjacencies() and helper methods
+   Questions:
+   - Is the door and secret passage logic easy to understand?
+   - Should we break it down into smaller methods?
+   - Any potential bugs with edge cases?
+
+================================================================================
+FEEDBACK NOTES
+================================================================================
+
+POSITIVE ASPECTS:
+-
+
+-
+
+-
+
+
+AREAS FOR IMPROVEMENT:
+-
+
+-
+
+-
+
+
+SPECIFIC ISSUES FOUND:
+-
+
+-
+
+-
+
+
+ACTION ITEMS:
+-
+
+-
+
+-
+
+
+================================================================================
+DESIGN DISCUSSION - NEXT BUTTON FLOW
+================================================================================
+
+We have a flowchart (NextButtonFlowchart.md) showing our planned implementation
+for the Next button functionality. Key design decisions needed:
+
+1. Should human player actions be fully event-driven or use a flag system?
+
+2. How to handle computer player auto-execution vs human player waiting?
+
+3. Best way to validate turn completion before allowing Next?
+
+
+DISCUSSION NOTES:
+-
+
+-
+
+-
+
+
+================================================================================
+
