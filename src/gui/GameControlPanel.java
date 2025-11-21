@@ -3,7 +3,6 @@ package gui;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -166,22 +165,7 @@ public class GameControlPanel extends JPanel {
 		guessResultField.setText(result);
 	}
 	
-	/**
-	 * Main method to test the panel
-	 * @param args Command line arguments (not used)
-	 */
-	public static void main(String[] args) {
-		GameControlPanel panel = new GameControlPanel();  // create the panel
-		JFrame frame = new JFrame();  // create the frame 
-		frame.setContentPane(panel); // put the panel in the frame
-		frame.setSize(750, 180);  // size the frame
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
-		frame.setVisible(true); // make it visible
-		
-		// test filling in the data
-		panel.setTurn(new clueGame.ComputerPlayer("Col. Mustard", "yellow", 0, 0), 5);
-		panel.setGuess("I have no guess!");
-		panel.setGuessResult("So you have nothing?");
-	}
+	// Note: Test main() method removed to avoid confusion with actual game
+	// The panel is now only used within ClueGame.java
 }
 
