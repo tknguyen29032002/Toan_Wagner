@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -85,5 +86,51 @@ public abstract class Player {
     // For testing
     public List<Card> getHand() {
         return hand;
+    }
+    
+    // Draw the player as a colored circle on the board
+    public void draw(Graphics g, int cellWidth, int cellHeight, int offsetIndex) {
+        int x = col * cellWidth;
+        int y = row * cellHeight;
+        
+        // Calculate circle dimensions (slightly smaller than cell)
+        int diameter = Math.min(cellWidth, cellHeight) - 8;
+        int baseOffsetX = (cellWidth - diameter) / 2;
+        int baseOffsetY = (cellHeight - diameter) / 2;
+        
+        // Apply offset for multiple players in same cell
+        // Offset pattern: 0=center, 1=right, 2=down, 3=left, 4=up, 5=down-right, etc.
+        int additionalOffsetX = 0;
+        int additionalOffsetY = 0;
+        int offsetAmount = diameter / 3;
+        
+        switch (offsetIndex % 6) {
+            case 0: // Center
+                break;
+            case 1: // Right
+                additionalOffsetX = offsetAmount;
+                break;
+            case 2: // Down
+                additionalOffsetY = offsetAmount;
+                break;
+            case 3: // Left
+                additionalOffsetX = -offsetAmount;
+                break;
+            case 4: // Up
+                additionalOffsetY = -offsetAmount;
+                break;
+            case 5: // Down-right
+                additionalOffsetX = offsetAmount / 2;
+                additionalOffsetY = offsetAmount / 2;
+                break;
+        }
+        
+        // Draw player as a filled circle with their color
+        g.setColor(color);
+        g.fillOval(x + baseOffsetX + additionalOffsetX, y + baseOffsetY + additionalOffsetY, diameter, diameter);
+        
+        // Draw black outline
+        g.setColor(Color.BLACK);
+        g.drawOval(x + baseOffsetX + additionalOffsetX, y + baseOffsetY + additionalOffsetY, diameter, diameter);
     }
 }
