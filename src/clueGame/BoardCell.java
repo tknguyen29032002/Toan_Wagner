@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -114,6 +116,52 @@ public class BoardCell {
 	
 	public void setOccupied(boolean occupied) {
 		this.isOccupied = occupied;
+	}
+	
+	// Draw this cell on the board
+	public void draw(Graphics g, int cellWidth, int cellHeight) {
+		int x = col * cellWidth;
+		int y = row * cellHeight;
+		
+		// Determine cell color and drawing based on type
+		if (initial == WALKWAY_INITIAL) {
+			// Draw walkway as yellow with black border
+			g.setColor(Color.YELLOW);
+			g.fillRect(x, y, cellWidth, cellHeight);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, cellWidth, cellHeight);
+		} else if (initial == 'X') {
+			// Draw unused spaces as black
+			g.setColor(Color.BLACK);
+			g.fillRect(x, y, cellWidth, cellHeight);
+		} else {
+			// Draw room cells as gray
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(x, y, cellWidth, cellHeight);
+		}
+		
+		// Draw door indicators
+		if (isDoorway()) {
+			g.setColor(Color.BLUE);
+			int doorThickness = 5;
+			
+			switch (doorDirection) {
+				case UP:
+					g.fillRect(x, y, cellWidth, doorThickness);
+					break;
+				case DOWN:
+					g.fillRect(x, y + cellHeight - doorThickness, cellWidth, doorThickness);
+					break;
+				case LEFT:
+					g.fillRect(x, y, doorThickness, cellHeight);
+					break;
+				case RIGHT:
+					g.fillRect(x + cellWidth - doorThickness, y, doorThickness, cellHeight);
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }
 
