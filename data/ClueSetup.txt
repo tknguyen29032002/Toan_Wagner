@@ -11,13 +11,14 @@ Room, Vault, V
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
-// people: type, name, color, row, col, playerType (Human or Computer)
-Person, Miss Scarlet, red, 16, 0, Human
-Person, Colonel Mustard, yellow, 0, 9, Computer
-Person, Mrs. White, white, 0, 14, Computer
-Person, Mr. Green, green, 9, 23, Computer
-Person, Mrs. Peacock, blue, 14, 23, Computer
-Person, Professor Plum, purple, 23, 5, Computer
+// people: type, name, color, x, y, playerType (Human or Computer)
+// x = column, y = row
+Person, Miss Scarlet, red, 1, 7, Human
+Person, Colonel Mustard, yellow, 10, 1, Computer
+Person, Mrs. White, white, 17, 1, Computer
+Person, Mr. Green, green, 28, 9, Computer
+Person, Mrs. Peacock, blue, 28, 19, Computer
+Person, Professor Plum, purple, 10, 28, Computer
 // Weapons: type, name
 Weapon, Candlestick
 Weapon, Knife
