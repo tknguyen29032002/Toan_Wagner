@@ -1,11 +1,13 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
@@ -56,6 +58,9 @@ public class GameControlPanel extends JPanel {
 		// Create bottom panel (row 2) with 2 sections
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new GridLayout(0, 2));
+		
+		// Add padding to the main panel
+		setBorder(new EmptyBorder(10, 0, 0, 0)); // Top padding only, as side padding is handled by layout
 		
 		// Add guess panel
 		bottomPanel.add(createGuessPanel());
@@ -146,6 +151,17 @@ public class GameControlPanel extends JPanel {
 	public void setTurn(Player player, int roll) {
 		currentPlayerField.setText(player.getName());
 		currentPlayerField.setBackground(player.getColor());
+		
+		// Adjust text color for better contrast
+		Color bgColor = player.getColor();
+		if (bgColor.equals(Color.BLUE) || 
+			bgColor.equals(new Color(128, 0, 128)) || // Purple
+			bgColor.equals(Color.RED)) {
+			currentPlayerField.setForeground(Color.WHITE);
+		} else {
+			currentPlayerField.setForeground(Color.BLACK);
+		}
+		
 		rollField.setText(String.valueOf(roll));
 	}
 	
@@ -163,6 +179,22 @@ public class GameControlPanel extends JPanel {
 	 */
 	public void setGuessResult(String result) {
 		guessResultField.setText(result);
+	}
+	
+	/**
+	 * Get the Next button for adding listeners
+	 * @return The next button
+	 */
+	public JButton getNextButton() {
+		return nextButton;
+	}
+	
+	/**
+	 * Get the Accusation button for adding listeners
+	 * @return The accusation button
+	 */
+	public JButton getAccusationButton() {
+		return accusationButton;
 	}
 	
 	// Note: Test main() method removed to avoid confusion with actual game

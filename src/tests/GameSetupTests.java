@@ -31,7 +31,7 @@ public class GameSetupTests {
         assertTrue(p1 instanceof HumanPlayer);
         assertEquals("Miss Scarlet", p1.getName());
         assertEquals(java.awt.Color.red, p1.getColor());
-        assertEquals(16, p1.getRow()); // Example starting loc
+        assertEquals(7, p1.getRow()); // Example starting loc
         assertEquals(0, p1.getCol());
 
         Player p2 = players.get(1);

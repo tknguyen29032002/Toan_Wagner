@@ -119,7 +119,7 @@ public class BoardCell {
 	}
 	
 	// Draw this cell on the board
-	public void draw(Graphics g, int cellWidth, int cellHeight) {
+	public void draw(Graphics g, int cellWidth, int cellHeight, boolean isTarget) {
 		int x = col * cellWidth;
 		int y = row * cellHeight;
 		
@@ -130,37 +130,45 @@ public class BoardCell {
 			g.fillRect(x, y, cellWidth, cellHeight);
 			g.setColor(Color.BLACK);
 			g.drawRect(x, y, cellWidth, cellHeight);
+			
+			// Draw door indicators ONLY on walkway cells (doors connect walkways to rooms)
+			if (isDoorway()) {
+				g.setColor(Color.BLUE);
+				int doorThickness = 5;
+				
+				switch (doorDirection) {
+					case UP:
+						g.fillRect(x, y, cellWidth, doorThickness);
+						break;
+					case DOWN:
+						g.fillRect(x, y + cellHeight - doorThickness, cellWidth, doorThickness);
+						break;
+					case LEFT:
+						g.fillRect(x, y, doorThickness, cellHeight);
+						break;
+					case RIGHT:
+						g.fillRect(x + cellWidth - doorThickness, y, doorThickness, cellHeight);
+						break;
+					default:
+						break;
+				}
+			}
 		} else if (initial == 'X') {
 			// Draw unused spaces as black
 			g.setColor(Color.BLACK);
 			g.fillRect(x, y, cellWidth, cellHeight);
 		} else {
-			// Draw room cells as gray
+			// Draw room cells as gray (no borders, no door indicators)
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(x, y, cellWidth, cellHeight);
 		}
 		
-		// Draw door indicators
-		if (isDoorway()) {
-			g.setColor(Color.BLUE);
-			int doorThickness = 5;
-			
-			switch (doorDirection) {
-				case UP:
-					g.fillRect(x, y, cellWidth, doorThickness);
-					break;
-				case DOWN:
-					g.fillRect(x, y + cellHeight - doorThickness, cellWidth, doorThickness);
-					break;
-				case LEFT:
-					g.fillRect(x, y, doorThickness, cellHeight);
-					break;
-				case RIGHT:
-					g.fillRect(x + cellWidth - doorThickness, y, doorThickness, cellHeight);
-					break;
-				default:
-					break;
-			}
+		// Highlight target cells (overwrites cell color)
+		if (isTarget) {
+			g.setColor(Color.CYAN);
+			g.fillRect(x, y, cellWidth, cellHeight);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, cellWidth, cellHeight);
 		}
 	}
 }

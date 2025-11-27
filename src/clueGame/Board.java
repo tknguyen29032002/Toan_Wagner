@@ -539,6 +539,13 @@ public class Board extends JPanel {
 		return targets;
 	}
 	
+	// Clear targets (used when turn ends or after player moves)
+	public void clearTargets() {
+		if (targets != null) {
+			targets.clear();
+		}
+	}
+	
 	// Check if accusation matches theAnswer
     public boolean checkAccusation(Solution accusation) {
         if (theAnswer == null || accusation == null) {
@@ -620,6 +627,16 @@ public class Board extends JPanel {
     public List<String> getPersonNames() {
         return personNames;
     }
+    
+    public List<String> getRoomNames() {
+        List<String> roomNames = new ArrayList<>();
+        for (Room room : roomMap.values()) {
+            if ("Room".equals(room.getType()) && !room.getName().isEmpty()) {
+                roomNames.add(room.getName());
+            }
+        }
+        return roomNames;
+    }
 
     public List<Card> getDeck() {
         return new ArrayList<>(deck); // Copy for test
@@ -656,7 +673,8 @@ public class Board extends JPanel {
         // Draw all cells
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numColumns; col++) {
-                grid[row][col].draw(g, cellWidth, cellHeight);
+            	boolean isTarget = targets != null && targets.contains(grid[row][col]);
+                grid[row][col].draw(g, cellWidth, cellHeight, isTarget);
             }
         }
         

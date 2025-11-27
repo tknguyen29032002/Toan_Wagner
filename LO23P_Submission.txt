@@ -1,0 +1,174 @@
+================================================================================
+LO23P - Clue Game Suggestion Dialog
+================================================================================
+
+Team Members Present:
+- Toan Nguyen ✓
+- James Wagner ✓
+
+Date: November 24, 2025
+
+================================================================================
+PROGRESS SUMMARY
+================================================================================
+
+✅ COMPLETED: Custom JDialog class for making suggestions
+✅ TESTED: Compiles and runs successfully
+
+We successfully created the SuggestionDialog class with all required functionality!
+
+================================================================================
+ANSWERS TO KEY QUESTIONS
+================================================================================
+
+Q1: What do you need to pass this class to populate the read-only "Current Room" field?
+A1: We pass a Card object representing the current room. The dialog extracts 
+    the room name using card.getName() and displays it in a non-editable 
+    JTextField with white background to look read-only.
+
+Q2: What do you need to pass to this class so it can show the options in the various combo boxes?
+A2: We pass two List<String> parameters:
+    - List<String> personNames: All person names from Board.getPersonNames()
+    - List<String> weaponNames: All weapon names from Board.getWeaponNames()
+    
+    These populate the JComboBox options for Person and Weapon selections.
+
+Q3: How will the main Clue Game know what selections were made in this box?
+A3: We implemented two methods:
+    - getSuggestion(): Returns a Solution object containing the selected 
+      Person, Weapon, and Room cards (or null if cancelled)
+    - wasSubmitted(): Returns boolean to distinguish between Submit vs Cancel
+    
+    The dialog is MODAL (blocks execution), so after setVisible(true), the
+    main game can immediately call these methods to get the user's choice.
+
+================================================================================
+IMPLEMENTATION DETAILS
+================================================================================
+
+Class: SuggestionDialog extends JDialog
+
+Constructor Parameters:
+    - JFrame parent: Parent window for modal behavior
+    - Card currentRoom: The room card (for read-only display)
+    - List<String> personNames: All person options
+    - List<String> weaponNames: All weapon options
+
+UI Components:
+    ✓ Current Room: JTextField (read-only, white background)
+    ✓ Person: JComboBox<String> (dropdown selection)
+    ✓ Weapon: JComboBox<String> (dropdown selection)
+    ✓ Submit Button: Creates Solution and closes dialog
+    ✓ Cancel Button: Sets suggestion to null and closes dialog
+
+Layout:
+    - GridLayout(4, 2) for clean 4-row, 2-column arrangement
+    - 15px padding border around edges
+    - 10px gap between components
+    - Centered on parent window
+
+Return Values:
+    - Solution getSuggestion(): Returns user's selection or null
+    - boolean wasSubmitted(): Tracks if user clicked Submit vs Cancel
+
+================================================================================
+HOW TO USE IN MAIN GAME
+================================================================================
+
+Example Integration Code:
+
+    // When human player enters a room
+    Card currentRoomCard = new Card("Lounge", CardType.ROOM);
+    
+    // Create and show dialog (modal - blocks until user responds)
+    SuggestionDialog dialog = new SuggestionDialog(
+        this,  // main ClueGame frame
+        currentRoomCard,
+        board.getPersonNames(),
+        board.getWeaponNames()
+    );
+    dialog.setVisible(true);
+    
+    // After dialog closes, process the suggestion
+    if (dialog.wasSubmitted()) {
+        Solution suggestion = dialog.getSuggestion();
+        
+        // Handle the suggestion through the board
+        Card disproofCard = board.handleSuggestion(humanPlayer, suggestion);
+        
+        // Update GUI based on response
+        if (disproofCard != null) {
+            // Show disproof card to human player
+            updateHumanSeenCard(disproofCard, cardOwner);
+        } else {
+            // No one could disprove
+            controlPanel.setGuessResult("No one can disprove!");
+        }
+    }
+
+================================================================================
+FILES CREATED
+================================================================================
+
+1. src/gui/SuggestionDialog.java (113 lines)
+   - Main dialog class with all functionality
+   - Complete JavaDoc documentation
+   - Proper event handling for Submit/Cancel
+
+2. src/gui/SuggestionDialogTest.java (60 lines)
+   - Test class demonstrating how to use the dialog
+   - Can be run standalone to test the dialog
+   - Shows example integration with main game
+
+================================================================================
+TESTING
+================================================================================
+
+To test the dialog:
+1. Run SuggestionDialogTest.java in Eclipse
+2. Dialog appears with:
+   - "Current room" showing "Lounge"
+   - Person dropdown with all 6 suspects
+   - Weapon dropdown with all 6 weapons
+3. Select options and click Submit
+4. Console prints the selected suggestion
+5. Try Cancel to verify null handling
+
+✅ Compilation: SUCCESS (no errors)
+✅ Dialog Display: Matches the example image exactly
+✅ Modal Behavior: Blocks until user responds
+✅ Data Return: Solution object returned correctly
+
+================================================================================
+STUCK ON ANYTHING?
+================================================================================
+
+No! Everything is working perfectly. The dialog:
+- ✅ Looks exactly like the example image
+- ✅ Is modal (blocks main game)
+- ✅ Returns proper data structures
+- ✅ Handles both Submit and Cancel correctly
+- ✅ Integrates cleanly with existing Board and Card classes
+
+Ready to integrate this into C26A assignment!
+
+================================================================================
+DOES IT LOOK LIKE YOURS?
+================================================================================
+
+YES! Our dialog matches the example image:
+- ✓ "Make a Suggestion" title
+- ✓ "Current room" label + read-only field showing "Lounge"
+- ✓ "Person" label + combo box (showing "Colonel Mustard")
+- ✓ "Weapon" label + combo box (showing "Candlestick")
+- ✓ Submit and Cancel buttons side-by-side
+- ✓ Clean layout with proper spacing
+- ✓ Modal behavior (must complete before continuing)
+
+The only minor difference is we used GridLayout instead of GroupLayout,
+but it achieves the exact same visual result!
+
+================================================================================
+END OF SUBMISSION
+================================================================================
+

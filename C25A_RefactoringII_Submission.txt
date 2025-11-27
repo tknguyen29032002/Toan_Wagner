@@ -1,0 +1,167 @@
+================================================================================
+C25A REFACTORING II - SUBMISSION
+================================================================================
+
+Team Members:
+- Toan Nguyen
+- James Wagner
+
+Date: November 24, 2025
+Assignment: C25A Refactoring II (LO22 Pair)
+
+================================================================================
+REFACTORING SUMMARY
+================================================================================
+
+This refactoring addressed critical issues in ComputerAITest.java that could
+have allowed bugs in the Computer AI logic to go undetected.
+
+ISSUES FIXED:
+
+1. testSelectTargetNoRooms() - Fixed three incorrect assertions:
+   - Changed assertTrue(targets.isEmpty()) to assertFalse - test needs targets
+   - Fixed assertFalse(targets.contains(selected)) to assertTrue - selected 
+     target MUST be from the targets set
+   - Fixed assertFalse(selectedTargets.size() > 1) to assertTrue - multiple
+     selections PROVE randomness
+
+2. testCreateSuggestionOnlyOneWeaponNotSeen() - Added missing validation:
+   - Test was only checking if suggestion exists (not null)
+   - Added assertion to verify knifeCard is actually selected as the only
+     unseen weapon
+
+3. testCreateSuggestionExcludesCardsInHand() - Enhanced incomplete test:
+   - Test was checking person selection but not weapon selection
+   - Added missing assertion to verify revolverCard is selected when knifeCard
+     is in hand (as per test comments)
+
+IMPACT:
+These fixes ensure the test suite properly validates Computer AI behavior and
+will catch bugs in the createSuggestion() and selectTargets() methods. The
+original test code had inverted logic that would pass even if the AI was broken.
+
+FILES CHANGED:
+- src/tests/ComputerAITest.java (7 insertions, 7 deletions)
+
+================================================================================
+GIT LOG - DETAILED VIEW
+================================================================================
+
+98e4d1b - Toan, 13 seconds ago : Refactor ComputerAITest: Fix incorrect assertions and add missing test validations
+- Fixed testSelectTargetNoRooms: Changed incorrect assertTrue(targets.isEmpty()) to assertFalse, and fixed inverted logic in assertions (targets.contains should be true, multiple selections should prove randomness)
+- Enhanced testCreateSuggestionOnlyOneWeaponNotSeen: Added missing assertion to verify knifeCard is actually selected as the only unseen weapon
+- Enhanced testCreateSuggestionExcludesCardsInHand: Added missing assertion to verify revolverCard is selected when knifeCard is in hand
+
+These changes ensure tests properly validate the Computer AI logic and catch potential bugs in the createSuggestion and selectTargets methods.
+
+ src/tests/ComputerAITest.java | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+d314cf7 - Toan, 3 days ago : Update gitlog.txt with latest commits (6 by Toan, 4 by James)
+
+ gitlog.txt | 44 ++++++++++++++++++++------------------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
+
+c1d9de9 - Toan, 3 days ago : Update compiled class files for GUI integration
+
+ bin/.gitignore                              |   1 -
+ bin/clueGame/BadConfigFormatException.class | Bin 499 -> 356 bytes
+ bin/clueGame/Board.class                    | Bin 16652 -> 14563 bytes
+ bin/clueGame/BoardCell.class                | Bin 2811 -> 3096 bytes
+ bin/clueGame/Card.class                     | Bin 1105 -> 901 bytes
+ bin/clueGame/CardType.class                 | Bin 991 -> 871 bytes
+ bin/clueGame/ComputerPlayer.class           | Bin 3901 -> 2747 bytes
+ bin/clueGame/DoorDirection.class            | Bin 1115 -> 995 bytes
+ bin/clueGame/HumanPlayer.class              | Bin 417 -> 808 bytes
+ bin/clueGame/Player.class                   | Bin 3511 -> 3607 bytes
+ bin/clueGame/Room.class                     | Bin 1261 -> 1590 bytes
+ bin/clueGame/Solution.class                 | Bin 713 -> 561 bytes
+ bin/experiment/TestBoard.class              | Bin 2476 -> 2089 bytes
+ bin/experiment/TestBoardCell.class          | Bin 1293 -> 1053 bytes
+ bin/tests/BoardTestsExp.class               | Bin 4708 -> 0 bytes
+ bin/tests/ComputerAITest.class              | Bin 0 -> 7778 bytes
+ bin/tests/GameSolutionTest.class            | Bin 0 -> 6178 bytes
+ 17 files changed, 1 deletion(-)
+
+c73f095 - James Wagner, 3 days ago : Add code review documentation and Next button flowchart for planning - James Wagner
+
+ CodeReview2.txt        |  89 ++++++++++++++++++++++++++++++++++++++
+ NextButtonFlowchart.md | 115 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 204 insertions(+)
+
+3cd4fbc - James Wagner, 3 days ago : Remove old GUI_Example.java - replaced by integrated ClueGame GUI - James Wagner
+
+ src/gui/GUI_Example.java | 63 ------------------------------------------------
+ 1 file changed, 63 deletions(-)
+
+8b98830 - James Wagner, 3 days ago : Create KnownCardsPanel with color-coded card tracking for People, Rooms, and Weapons - James Wagner
+
+ src/gui/KnownCardsPanel.java | 64 ++------------------------------------------
+ 1 file changed, 2 insertions(+), 62 deletions(-)
+
+937f6ab - James Wagner, 3 days ago : Create GameControlPanel with turn control, roll display, and guess sections - James Wagner
+
+ src/gui/GameControlPanel.java | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
+
+0f6fd69 - Toan Nguyen, 3 days ago : Update custom board layout and setup with proper player starting positions - Toan Nguyen
+
+ data/ClueLayout.csv |  2 +-
+ data/ClueSetup.txt  | 15 ++++++++-------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
+
+8606863 - Toan Nguyen, 3 days ago : Update BoardCell with draw method for custom cell rendering in GUI - Toan Nguyen
+
+ src/clueGame/BoardCell.java | 48 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+26b5d96 - Toan Nguyen, 3 days ago : Update Room class with getColor method for room display in GUI - Toan Nguyen
+
+ src/clueGame/Room.java | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+================================================================================
+GIT LOG - COMPACT VIEW WITH GRAPH
+================================================================================
+
+* 98e4d1b (HEAD -> main) Refactor ComputerAITest: Fix incorrect assertions and add missing test validations
+* d314cf7 (origin/main, origin/HEAD) Update gitlog.txt with latest commits (6 by Toan, 4 by James)
+* c1d9de9 Update compiled class files for GUI integration
+* c73f095 Add code review documentation and Next button flowchart for planning - James Wagner
+* 3cd4fbc Remove old GUI_Example.java - replaced by integrated ClueGame GUI - James Wagner
+* 8b98830 Create KnownCardsPanel with color-coded card tracking for People, Rooms, and Weapons - James Wagner
+* 937f6ab Create GameControlPanel with turn control, roll display, and guess sections - James Wagner
+* 0f6fd69 Update custom board layout and setup with proper player starting positions - Toan Nguyen
+* 8606863 Update BoardCell with draw method for custom cell rendering in GUI - Toan Nguyen
+* 26b5d96 Update Room class with getColor method for room display in GUI - Toan Nguyen
+* ba6fe56 Update Player and HumanPlayer classes with seen cards tracking for GUI - Toan Nguyen
+* 212a92c Add main ClueGame class with GUI integration and welcome dialog - Toan Nguyen
+* 6e16931 Implement Known Cards Panel (C21A-2) with color-coded player tracking
+* 63146e3 Implement Clue Player 2: card processing and computer AI logic
+
+================================================================================
+PARTNER CONTRIBUTION ANALYSIS
+================================================================================
+
+Recent Commits (Last 10):
+- Toan Nguyen: 5 commits
+- James Wagner: 4 commits
+
+The git log demonstrates equitable partner contributions throughout the project
+with both team members actively contributing to different aspects of the Clue
+game implementation.
+
+Toan's recent work focused on:
+- GUI integration and board rendering
+- Player and cell visualization
+- This refactoring of test assertions
+
+James's recent work focused on:
+- Game control panel implementation
+- Known cards panel with color-coding
+- Code review documentation and planning
+
+================================================================================
+END OF SUBMISSION
+================================================================================
+

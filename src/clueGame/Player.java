@@ -82,6 +82,12 @@ public abstract class Player {
     public int getCol() {
         return col;
     }
+    
+    // Setter for position (used when moving player)
+    public void setPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
 
     // For testing
     public List<Card> getHand() {
