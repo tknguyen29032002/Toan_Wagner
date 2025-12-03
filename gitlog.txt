@@ -2,413 +2,320 @@ commit 17f32f6a8c2d5e9b1a4f7c3d6e8a0b2c4d6f8e0a
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Tue Dec 3 14:35:22 2025 +0000
 
-    C26A: Complete game flow - suggestions, accusations, player movement
-    
-    - Computer makes suggestion when entering room (room matches location)
-    - Human prompted for suggestion with combo boxes (room read-only)
-    - Suggestion/response displayed in control panel
-    - Accused player moves to room (with stay-in-room option)
-    - Human can make accusation at beginning of turn
-    - Computer makes accusation when mystery solved
-    - Game ends properly after accusation (win/lose message)
-    - Fixed room highlighting (entire room highlighted, not just center)
-    - Fixed room click handling (can click anywhere in target room)
+    C26A: finish game flow with suggestions and accusations
 
 commit a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Tue Dec 3 14:20:15 2025 +0000
 
-    Fix room click UX: Allow clicking anywhere in highlighted room
-    
-    - Added findTargetCell() method to map room clicks to room center
-    - Room cells with matching initial now redirect to room center target
-    - Eliminates "invalid target" errors when clicking non-center room cells
-    - Improved player movement experience for room entry
+    fix room click to work anywhere in room
 
 commit c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Tue Dec 3 14:15:08 2025 +0000
 
-    Enhance Board paintComponent: Highlight entire room as target
-    
-    - Build set of target room initials for full room highlighting
-    - All cells belonging to target room now highlighted in cyan
-    - Better visual feedback for room movement options
-    - Maintains walkway target highlighting unchanged
+    highlight entire room when its a target
 
 commit e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Tue Dec 3 14:05:33 2025 +0000
 
-    Implement human suggestion flow with SuggestionDialog
-    
-    - handleHumanSuggestion() creates room card and shows dialog
-    - Display suggestion text in control panel
-    - Move accused player to room via moveAccusedPlayerToRoom()
-    - Show disproof card with player name or "No new clue"
-    - Update human's seen cards when card is revealed
+    add human suggestion dialog and flow
 
 commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Tue Dec 3 13:55:27 2025 +0000
 
-    Implement computer suggestion and accusation logic
-    
-    - processComputerTurn() handles move selection and suggestion
-    - Computer makes suggestion when entering room center
-    - Display suggestion in control panel with proper formatting
-    - Handle suggestion result: "Disproven by X" or "No one could disprove!"
-    - Set accusation flag when suggestion not disproved
+    computer suggestion and accusation logic
 
 commit f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Tue Dec 3 13:45:18 2025 +0000
 
-    Implement human accusation at beginning of turn
-    
-    - handleAccusationButton() validates turn state before allowing accusation
-    - Error message if not human's turn or already moved
-    - AccusationDialog with combo boxes for person, weapon, room
-    - Check accusation against solution and display result
-    - Game ends with win/lose message showing correct answer
+    human accusation button handler
 
 commit b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Tue Dec 3 13:35:42 2025 +0000
 
-    Implement computer accusation when mystery solved
-    
-    - handleComputerAccusation() processes pending accusation
-    - Display accusation in control panel
-    - Computer wins if accusation correct (game over)
-    - Computer eliminated if accusation wrong (shouldn't happen)
-    - Clear accusation state after processing
+    computer accusation when solved
 
 commit d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Tue Dec 3 13:25:55 2025 +0000
 
-    Add moveAccusedPlayerToRoom() to Board class
-    
-    - Find player by name from suggestion person card
-    - Move player to room center position
-    - Set wasMovedBySuggestion flag for stay-in-room logic
-    - Support both HumanPlayer and ComputerPlayer types
-    - Return moved player or null if not found
+    add moveAccusedPlayerToRoom method
 
 commit e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Tue Dec 3 13:15:30 2025 +0000
 
-    Add handleSuggestionWithOwner() for tracking who disproved
-    
-    - Return SuggestionResult with both card and player
-    - Query players in order starting after accuser
-    - Support proper display of "Disproven by [player]" message
-    - Enable human to see which player showed the card
+    handleSuggestionWithOwner to track who disproved
 
 commit 98e4d1b6220b9c314327b97308e7d0110a67aff0
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 24 20:08:16 2025 +0000
 
-    Refactor ComputerAITest: Fix incorrect assertions and add missing test validations
-    
-    - Fixed testSelectTargetNoRooms: Changed incorrect assertTrue(targets.isEmpty()) to assertFalse, and fixed inverted logic in assertions (targets.contains should be true, multiple selections should prove randomness)
-    - Enhanced testCreateSuggestionOnlyOneWeaponNotSeen: Added missing assertion to verify knifeCard is actually selected as the only unseen weapon
-    - Enhanced testCreateSuggestionExcludesCardsInHand: Added missing assertion to verify revolverCard is selected when knifeCard is in hand
-    
-    These changes ensure tests properly validate the Computer AI logic and catch potential bugs in the createSuggestion and selectTargets methods.
+    fix ComputerAITest assertions
 
 commit d314cf7b389a765628b649428ed6ba40b53bada1
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Nov 21 22:25:17 2025 +0000
 
-    Update gitlog.txt with latest commits (6 by Toan, 4 by James)
+    update gitlog
 
 commit c1d9de9c836f366ada301c1043f13603341bbecb
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:25:09 2025 +0000
 
-    Update compiled class files for GUI integration
+    recompile class files
 
 commit c73f0955bb07c0a9d54d871a7b65e813ac323b88
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:25:03 2025 +0000
 
-    Add code review documentation and Next button flowchart for planning - James Wagner
+    add code review and flowchart docs
 
 commit 3cd4fbc8521f623a9819f8f2a69c3d93a8bb7efa
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:25:02 2025 +0000
 
-    Remove old GUI_Example.java - replaced by integrated ClueGame GUI - James Wagner
+    remove old GUI_Example
 
 commit 8b9883024a6f1d67ad1ed09eadfaa2a081582a71
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:25:00 2025 +0000
 
-    Create KnownCardsPanel with color-coded card tracking for People, Rooms, and Weapons - James Wagner
+    KnownCardsPanel with color coded tracking
 
 commit 937f6abcacc08ce4136022e6f95a1739fba2846e
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:24:59 2025 +0000
 
-    Create GameControlPanel with turn control, roll display, and guess sections - James Wagner
+    GameControlPanel for turn and guess display
 
 commit 0f6fd69c9f9ebe086e1d255806ccc9e9f2ccee4c
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Nov 21 22:24:53 2025 +0000
 
-    Update custom board layout and setup with proper player starting positions - Toan Nguyen
+    update board layout with player positions
 
 commit 860686341e071c7ed43ca4464cda917acd1dfb5d
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Nov 21 22:24:51 2025 +0000
 
-    Update BoardCell with draw method for custom cell rendering in GUI - Toan Nguyen
+    BoardCell draw method for GUI
 
 commit 26b5d96afc2b82eb84e1adc6a16accda67a95413
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:24:50 2025 +0000
 
-    Update Room class with getColor method for room display in GUI - James Wagner
+    Room getColor for GUI display
 
 commit 4330b723f3729a21827545dfbe13313bd58d497b
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 21 22:24:45 2025 +0000
 
-    Update Player and HumanPlayer classes with seen cards tracking for GUI - James Wagner
+    Player seen cards tracking
 
 commit ba6fe5642b487b921841565ea4ef0fac0b799ca3
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Nov 21 22:24:43 2025 +0000
 
-    Update Board class with paintComponent for GUI rendering and board display - Toan Nguyen
+    Board paintComponent for rendering
 
 commit 212a92c92998a8d27c32485a2dbb831be7e8756a
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Nov 21 22:24:42 2025 +0000
 
-    Add main ClueGame class with GUI integration and welcome dialog - Toan Nguyen
+    main ClueGame class with GUI
 
 commit 6e16931e8439e720b2b6e57af4cec0a1f6b57737
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 14 20:20:10 2025 +0000
 
-    Implement Known Cards Panel (C21A-2) with color-coded player tracking
-    
-    - Add KnownCardsPanel.java with complete GUI implementation
-    - Display human player's cards in hand (light pink background)
-    - Show seen cards with color coding by player
-    - Organize cards by type: People, Rooms, Weapons
-    - Support dynamic panel updates using removeAll/add pattern
-    - Include comprehensive main method for testing
-    - Add GameControlPanel.java and GUI_Example.java
-    - All features meet assignment requirements (12 points)
+    C21A-2: Known Cards Panel done
 
 commit 63146e340300e4b951e7ec7b1b7137c25525c048
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 10 20:37:41 2025 +0000
 
-    Implement Clue Player 2: card processing and computer AI logic
-    
-    - Added Board.checkAccusation() to verify accusations against solution
-    - Added Board.handleSuggestion() to process suggestions from players
-    - Added Player.disproveSuggestion() to check cards against suggestions
-    - Added ComputerPlayer.createSuggestion() AI for smart suggestion creation
-    - Added ComputerPlayer.selectTargets() AI for intelligent move selection
-    - Added ComputerPlayer seen cards tracking for AI decisions
-    - Created GameSolutionTest.java with comprehensive card processing tests
-    - Created ComputerAITest.java with comprehensive AI decision tests
-    - Updated test files for proper formatting
+    Clue Player 2: accusations, suggestions, computer AI
 
 commit 903980193ee24d902f49dd3086a3c14ff0e1f9d4
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Nov 7 17:37:36 2025 -0700
 
-    Add files via upload
+    upload files
 
 commit d6acf60b2336a98bd29206ed456c9fd815c18b03
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:16:08 2025 -0700
 
-    Update gitlog.txt with refactoring commits - 4 by Toan, 4 by James
+    update gitlog
 
 commit b0d20b02cc71214ebf2a7623d7a3aebb2ece15c8
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:15:45 2025 -0700
 
-    Simplify Room, DoorDirection, and BadConfigFormatException comments
+    simplify Room and DoorDirection comments
 
 commit 7d5d4012f2601da8215409688cad696975dce831
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Nov 3 15:15:22 2025 -0700
 
-    Simplify BoardCell comments and remove redundant JavaDoc
+    simplify BoardCell comments
 
 commit 615210d330ceb3772d140ec54e4c3d425311d4a7
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:14:54 2025 -0700
 
-    Continue simplifying Board class comments for consistency
+    simplify Board comments
 
 commit dee2e7dbc96c76a5d239acd3977b2ad4244fbd43
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Nov 3 15:14:22 2025 -0700
 
-    Simplify comments to single-line format for better readability
+    single-line comment format
 
 commit d2d76faa3275def031afec6444fec704af24ecbb
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:09:38 2025 -0700
 
-    Refactor: Add comprehensive JavaDoc documentation to Room and BadConfigFormatException classes
+    javadoc for Room and exception classes
 
 commit 2ac206091039074e52c345c04323d521e6ee3c9e
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:09:20 2025 -0700
 
-    Refactor: Add comprehensive JavaDoc documentation to BoardCell class
+    javadoc for BoardCell
 
 commit ab7e45908d98f1d662f25cbdad4277aa5adf4bd3
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:08:52 2025 -0700
 
-    Refactor: Add comprehensive comments to DoorDirection enum explaining door direction handling
+    comments for DoorDirection enum
 
 commit 9e23dab224a1b8d719ba7c62069e3aca2b9263d2
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:08:36 2025 -0700
 
-    Refactor: Extract helper methods from calcRoomCenterAdj for better code organization and readability
+    extract helper methods in calcRoomCenterAdj
 
 commit ad0b62fd3f5d2714319a18f964be254224316d54
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:08:17 2025 -0700
 
-    Refactor: Add comprehensive JavaDoc comments to all public and private methods
+    add javadoc comments
 
 commit f833e3dc51d582588ecf70148be630463f6b9d6a
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:07:44 2025 -0700
 
-    Refactor: Extract repeated bounds checking logic into isValidCell method (DRY principle)
+    extract isValidCell method
 
 commit a0f80320ddc0515c01ee1759a45da8a885528e1e
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:07:31 2025 -0700
 
-    Refactor: Fix resource leak by using try-finally to ensure Scanner is properly closed
+    fix scanner resource leak
 
 commit 1fa241d7f6829cef96aa555c1d4ecf60bfcc095b
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 15:07:11 2025 -0700
 
-    Refactor: Extract magic constants into named constants for better code readability
+    extract magic constants
 
 commit accb33c375c4de11b2850de6a19c1dc34adc1b43
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Nov 3 13:34:14 2025 -0700
 
-    Fix Java version configuration: Update from Java 21 to Java 11
-    
-    - Updated .classpath to use JavaSE-11
-    - Updated compiler settings in .settings/org.eclipse.jdt.core.prefs
-    - Fixed 417+ linter errors caused by Java version mismatch
-    - Added new test files: BoardAdjTargetTest306.java, CheckRoomBounds.java
-    - Recompiled class files with correct Java version
+    fix java version to 11
 
 commit 36945bcb2604804fa080e6fe5075c7d87131a93b
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Oct 27 21:26:55 2025 -0600
 
-    Add Wagner commit for test review and verification work
+    test review work
 
 commit 24cd3ff86f9e90ca3688082e8645ab0f4ac6717a
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Oct 27 21:25:29 2025 -0600
 
-    Add 4 recent commits by James to gitlog.txt - All BoardAdjTargetTest fixes documented
+    update gitlog with BoardAdjTargetTest fixes
 
 commit a13aa4a9e10579dc32d59ebe9d963397d296214e
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Oct 27 21:24:30 2025 -0600
 
-    Update gitlog.txt with latest commit
+    update gitlog
 
 commit 87cdb609045770fc08ec1440ea4731c5da97cc9d
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Oct 27 21:24:19 2025 -0600
 
-    Fixed all BoardAdjTargetTest and FileInitTests - Updated ClueLayout.csv with correct doors and room boundaries. All tests now pass. Work by: Toan Nguyen
+    fix BoardAdjTargetTest and FileInitTests
 
 commit b4c5a575d082fdb92fbf712f840d5f5929ff84c3
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Wed Oct 22 13:19:48 2025 -0600
 
-    Minor test file update for C15A-2
+    minor test update
 
 commit 0db3c641948d711a24bd39db773b6001d9a93842
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Wed Oct 22 11:43:32 2025 -0600
 
-    Complete C15A-2: Implement file loading - all tests passing
+    C15A-2: file loading done
 
 commit d5ea01922bca3e7f5bd76c0b827142da8d4c0028
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Oct 20 10:32:50 2025 -0600
 
-    Complete C15A-1: Add clueGame package with skeleton classes, test files, and documentation
+    C15A-1: skeleton classes and tests
 
 commit 5980f3d2386a8c1c2742252114f239f311732a6d
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Oct 17 17:42:59 2025 -0600
 
-    Update gitlog.txt with detailed commit history for both team members and fix testTargetsOccupied
+    update gitlog and fix testTargetsOccupied
 
 commit 8a4a5dc086191c82f01c0173a533784b5ff0dd0b
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Fri Oct 17 13:11:01 2025 -0600
 
-    Update gitlog.txt with latest commit for test case fixes
+    update gitlog
 
 commit 2917f49b72b19aedc70ae2c453181add0b145282
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Fri Oct 17 13:08:07 2025 -0600
 
-    Fix test cases for testTargetsRoom and testTargetsOccupied - correct target counts and assertions
+    fix testTargetsRoom and testTargetsOccupied
 
 commit 51e41bc84887e8f018e7d17f5cad10df40a7be8f
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Oct 13 15:33:34 2025 -0600
 
-    Update gitlog.txt: Complete TestBoardCell documentation and update commit details
+    update gitlog
 
 commit a0b13154ba07d815dd8378046ff87e43d23817d6
 Author: James Wagner <james_wagner@mine.edu>
 Date:   Mon Oct 13 15:31:32 2025 -0600
 
-    Add gitlog.txt with real commit history documentation
+    add gitlog.txt
 
 commit d42f314dc7f4228b46b53e08f22747fca792ee97
 Merge: 6256f26 b1aec02
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Oct 13 15:23:34 2025 -0600
 
-    Merge branch 'main' of https://github.com/tknguyen29032002/Toan_Wagner
+    merge main
 
 commit 6256f2637d94c13236c3075d1509ac82f33bb5af
 Author: Toan Nguyen <tnguyen29032002@gmail.com>
 Date:   Mon Oct 13 15:22:33 2025 -0600
 
-    Initial commit: Clue Game project with TestBoard and TestBoardCell classes
-    
-    - Added TestBoardCell class for grid cell representation
-    - Added TestBoard class for game board management
-    - Implemented adjacency calculations for movement algorithms
-    - Clean JavaDoc comments without asterisks for better readability
-    - Added compiled .class files and Eclipse project configuration
-    - Ready for movement algorithm implementation
+    initial commit with TestBoard and TestBoardCell
 
 commit b1aec02e5eb279ca34e930748c956d77c54603fa
 Author: tknguyen29032002 <tnguyen29032002>
