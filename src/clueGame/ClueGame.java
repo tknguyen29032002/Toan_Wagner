@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import gui.AccusationDialog;
 import gui.GameControlPanel;
 import gui.KnownCardsPanel;
 import gui.SuggestionDialog;
@@ -39,6 +40,7 @@ public class ClueGame extends JFrame {
 	private Set<BoardCell> currentTargets;
 	private boolean humanTurnInProgress;
 	private boolean hasMovedThisTurn;
+	private boolean gameOver;
 	private Random random;
 	
 	/**
@@ -51,6 +53,7 @@ public class ClueGame extends JFrame {
 		currentRoll = 0;
 		humanTurnInProgress = false;
 		hasMovedThisTurn = false;
+		gameOver = false;
 		
 		// Initialize the board
 		board = Board.getInstance();
@@ -165,6 +168,11 @@ public class ClueGame extends JFrame {
 	 *                            No -> Do accusation?, Do Move, Make Suggestion?
 	 */
 	private void startTurn() {
+		// Don't start new turns if game is over
+		if (gameOver) {
+			return;
+		}
+		
 		// Update current player (already set by currentPlayerIndex)
 		Player currentPlayer = board.getPlayers().get(currentPlayerIndex);
 		
@@ -172,8 +180,29 @@ public class ClueGame extends JFrame {
 		currentRoll = random.nextInt(6) + 1;
 		
 		// Calc Targets
-		board.calcTargets(board.getCell(currentPlayer.getRow(), currentPlayer.getCol()), currentRoll);
+		BoardCell currentCell = board.getCell(currentPlayer.getRow(), currentPlayer.getCol());
+		board.calcTargets(currentCell, currentRoll);
 		currentTargets = board.getTargets();
+		
+		// Handle "stay in room" logic - if player was moved by suggestion, they can stay
+		// Only HUMAN players get this choice - computer players must move out to prevent cascade
+		if (currentCell.isRoomCenter()) {
+			if (currentPlayer instanceof HumanPlayer) {
+				HumanPlayer hp = (HumanPlayer) currentPlayer;
+				if (hp.wasMovedBySuggestion()) {
+					// Add current room as a target option for human player
+					currentTargets.add(currentCell);
+					hp.setWasMovedBySuggestion(false); // Reset flag
+				}
+			} else if (currentPlayer instanceof ComputerPlayer) {
+				ComputerPlayer cp = (ComputerPlayer) currentPlayer;
+				if (cp.wasMovedBySuggestion()) {
+					// Computer players who were dragged to a room MUST leave
+					// This prevents cascade of all players being dragged to same room
+					cp.setWasMovedBySuggestion(false); // Reset flag but don't add room as target
+				}
+			}
+		}
 		
 		// Update Game Control Panel
 		controlPanel.setTurn(currentPlayer, currentRoll);
@@ -201,8 +230,15 @@ public class ClueGame extends JFrame {
 			humanTurnInProgress = false;
 			hasMovedThisTurn = true;
 			
-			// Do accusation? (dummied out for this assignment)
-			// TODO: Add computer accusation logic in next assignment
+			ComputerPlayer computer = (ComputerPlayer) currentPlayer;
+			
+			// Do accusation? Check if computer should make an accusation
+			if (computer.shouldMakeAccusation()) {
+				handleComputerAccusation(computer);
+				if (gameOver) {
+					return; // Game ended due to accusation
+				}
+			}
 			
 			// Do Move
 			processComputerTurn();
@@ -219,6 +255,15 @@ public class ClueGame extends JFrame {
 	 *            Yes -> Update current player -> Roll dice -> Calc Targets
 	 */
 	private void handleNextButton() {
+		// Don't allow next if game is over
+		if (gameOver) {
+			JOptionPane.showMessageDialog(this, 
+				"The game is over!",
+				"Game Over", 
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		
 		// Check: current human player finished?
 		Player currentPlayer = board.getPlayers().get(currentPlayerIndex);
 		if (currentPlayer instanceof HumanPlayer && !hasMovedThisTurn) {
@@ -243,13 +288,22 @@ public class ClueGame extends JFrame {
 	
 	/**
 	 * Handle the Accusation button click
-	 * NOTE: Full accusation logic will be added in the next assignment
-	 * For now, just show a message that this feature is coming soon
+	 * Human player makes an accusation at the beginning of their turn
 	 */
 	private void handleAccusationButton() {
+		// Don't allow if game is over
+		if (gameOver) {
+			JOptionPane.showMessageDialog(this, 
+				"The game is over!",
+				"Game Over", 
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		
 		Player currentPlayer = board.getPlayers().get(currentPlayerIndex);
 		
-		// Only human player can make accusations via button
+		// Only human player can make accusations via button, on their turn, BEFORE moving
+		// Rubric: "Human is allowed to make accusation at beginning of their turn"
 		if (!(currentPlayer instanceof HumanPlayer) || !humanTurnInProgress) {
 			JOptionPane.showMessageDialog(this, 
 				"You can only make an accusation on your turn!",
@@ -258,11 +312,73 @@ public class ClueGame extends JFrame {
 			return;
 		}
 		
-		// Dummied out for this assignment - full implementation in next assignment
-		JOptionPane.showMessageDialog(this, 
-			"Accusation feature will be available in the next assignment.",
-			"Coming Soon", 
-			JOptionPane.INFORMATION_MESSAGE);
+		// Must be at BEGINNING of turn (before moving)
+		if (hasMovedThisTurn) {
+			JOptionPane.showMessageDialog(this, 
+				"You can only make an accusation at the BEGINNING of your turn (before moving)!",
+				"Invalid Action", 
+				JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		// Show the accusation dialog
+		AccusationDialog dialog = new AccusationDialog(
+			this,
+			board.getPersonNames(),
+			board.getWeaponNames(),
+			board.getRoomNames()
+		);
+		dialog.setVisible(true);
+		
+		// Get the accusation from the dialog
+		Solution accusation = dialog.getAccusation();
+		
+		// Check if user cancelled
+		if (accusation == null) {
+			return; // Cancelled - no penalty
+		}
+		
+		// Check the accusation
+		boolean correct = board.checkAccusation(accusation);
+		
+		// Display the accusation
+		String accusationText = accusation.getPerson().getName() + ", " +
+			accusation.getWeapon().getName() + ", " +
+			accusation.getRoom().getName();
+		controlPanel.setGuess("Accusation: " + accusationText);
+		
+		if (correct) {
+			// Player wins!
+			controlPanel.setGuessResult("CORRECT! You win!");
+			gameOver = true;
+			JOptionPane.showMessageDialog(this, 
+				"Congratulations! Your accusation was correct!\n\n" +
+				"The answer was:\n" +
+				accusation.getPerson().getName() + " with the " +
+				accusation.getWeapon().getName() + " in the " +
+				accusation.getRoom().getName() + "\n\n" +
+				"You WIN!",
+				"You Win!", 
+				JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			// Player loses!
+			Solution answer = board.getTheAnswer();
+			controlPanel.setGuessResult("WRONG! You lose!");
+			gameOver = true;
+			JOptionPane.showMessageDialog(this, 
+				"Sorry! Your accusation was incorrect!\n\n" +
+				"You accused:\n" +
+				accusation.getPerson().getName() + " with the " +
+				accusation.getWeapon().getName() + " in the " +
+				accusation.getRoom().getName() + "\n\n" +
+				"The correct answer was:\n" +
+				answer.getPerson().getName() + " with the " +
+				answer.getWeapon().getName() + " in the " +
+				answer.getRoom().getName() + "\n\n" +
+				"You LOSE!",
+				"You Lose!", 
+				JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	/**
@@ -295,8 +411,11 @@ public class ClueGame extends JFrame {
 		
 		BoardCell clickedCell = board.getCell(row, col);
 		
-		// Clicked on Target?
-		if (currentTargets == null || !currentTargets.contains(clickedCell)) {
+		// Check if clicked cell is a valid target
+		// For room cells, check if the room's center is a target (allows clicking anywhere in room)
+		BoardCell targetCell = findTargetCell(clickedCell);
+		
+		if (targetCell == null) {
 			// NO: Error Message
 			JOptionPane.showMessageDialog(this, 
 				"That is not a valid target. Please select a highlighted cell.",
@@ -305,8 +424,8 @@ public class ClueGame extends JFrame {
 			return; // End
 		}
 		
-		// YES: Move Player
-		humanPlayer.setPosition(row, col);
+		// YES: Move Player to the target cell (room center if in room, or clicked cell if walkway)
+		humanPlayer.setPosition(targetCell.getRow(), targetCell.getCol());
 		hasMovedThisTurn = true;
 		
 		// Clear targets after move and repaint
@@ -314,13 +433,43 @@ public class ClueGame extends JFrame {
 		board.repaint();
 		
 		// In Room?
-		if (clickedCell.isRoomCenter()) {
+		if (targetCell.isRoomCenter()) {
 			// YES: Handle Suggestion
-			Room room = board.getRoom(clickedCell);
+			Room room = board.getRoom(targetCell);
 			handleHumanSuggestion(room);
 			// Update Result (done inside handleHumanSuggestion)
 		}
 		// NO or after suggestion: End (turn complete, waiting for Next button)
+	}
+	
+	/**
+	 * Find the valid target cell for a clicked cell
+	 * If clicked cell is a walkway target, returns it
+	 * If clicked cell is in a room whose center is a target, returns the room center
+	 * Returns null if not a valid target
+	 */
+	private BoardCell findTargetCell(BoardCell clickedCell) {
+		if (currentTargets == null) {
+			return null;
+		}
+		
+		// Direct match - clicked on a target cell
+		if (currentTargets.contains(clickedCell)) {
+			return clickedCell;
+		}
+		
+		// Check if clicked in a room whose center is a target
+		char initial = clickedCell.getInitial();
+		if (initial != 'W' && initial != 'X') {  // Not a walkway or unused space
+			// Look for room center in targets
+			for (BoardCell target : currentTargets) {
+				if (target.isRoomCenter() && target.getInitial() == initial) {
+					return target;  // Return the room center
+				}
+			}
+		}
+		
+		return null;  // Not a valid target
 	}
 	
 	/**
@@ -345,24 +494,40 @@ public class ClueGame extends JFrame {
 				Card roomCard = new Card(room.getName(), CardType.ROOM);
 				Solution suggestion = computer.createSuggestion(roomCard);
 				
+				// Mark this room as "seen" so computer doesn't keep returning
+				computer.updateSeen(roomCard);
+				
 				// Display the suggestion in control panel
 				String suggestionText = suggestion.getPerson().getName() + ", " + 
 					suggestion.getWeapon().getName() + ", " + 
 					suggestion.getRoom().getName();
 				controlPanel.setGuess(suggestionText);
 				
+				// Move the accused person to this room
+				board.moveAccusedPlayerToRoom(suggestion, room);
+				board.repaint();
+				
 				// Handle the suggestion and update result
 				Board.SuggestionResult result = board.handleSuggestionWithOwner(computer, suggestion);
 				if (result != null) {
+					// Suggestion was disproven
 					controlPanel.setGuessResult("Disproven by " + result.getPlayer().getName());
 					computer.updateSeen(result.getCard());
+					computer.clearAccusation(); // Clear any pending accusation since it was disproved
 					
 					// If human player showed the card, update their seen list
 					if (result.getPlayer() instanceof HumanPlayer) {
 						updateHumanSeenCard(result.getCard(), computer);
 					}
 				} else {
+					// No one could disprove - computer should make accusation next turn
+					// But only if computer doesn't have the room card in their hand
 					controlPanel.setGuessResult("No one could disprove!");
+					
+					if (!computer.hasCard(roomCard)) {
+						// Computer should accuse next turn
+						computer.setShouldMakeAccusation(true, suggestion);
+					}
 				}
 			}
 		} else {
@@ -371,6 +536,53 @@ public class ClueGame extends JFrame {
 			board.repaint();
 		}
 		// End - computer turn complete
+	}
+	
+	/**
+	 * Handle computer player making an accusation
+	 * @param computer The computer player making the accusation
+	 */
+	private void handleComputerAccusation(ComputerPlayer computer) {
+		Solution accusation = computer.getPendingAccusation();
+		
+		if (accusation == null) {
+			computer.clearAccusation();
+			return;
+		}
+		
+		// Display the accusation
+		String accusationText = accusation.getPerson().getName() + ", " +
+			accusation.getWeapon().getName() + ", " +
+			accusation.getRoom().getName();
+		controlPanel.setGuess("Accusation: " + accusationText);
+		
+		// Check the accusation
+		boolean correct = board.checkAccusation(accusation);
+		
+		if (correct) {
+			// Computer wins!
+			controlPanel.setGuessResult("CORRECT! " + computer.getName() + " wins!");
+			gameOver = true;
+			JOptionPane.showMessageDialog(this, 
+				computer.getName() + " has made a correct accusation!\n\n" +
+				"The answer was:\n" +
+				accusation.getPerson().getName() + " with the " +
+				accusation.getWeapon().getName() + " in the " +
+				accusation.getRoom().getName() + "\n\n" +
+				computer.getName() + " WINS!\nYou lose!",
+				"Game Over - Computer Wins!", 
+				JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			// Computer made wrong accusation (shouldn't happen with proper logic)
+			// But handle it anyway - computer is eliminated
+			controlPanel.setGuessResult("WRONG! " + computer.getName() + " is eliminated!");
+			JOptionPane.showMessageDialog(this, 
+				computer.getName() + " has made an incorrect accusation and is eliminated!",
+				"Incorrect Accusation", 
+				JOptionPane.WARNING_MESSAGE);
+		}
+		
+		computer.clearAccusation();
 	}
 	
 	/**
@@ -399,10 +611,15 @@ public class ClueGame extends JFrame {
 				suggestion.getRoom().getName();
 			controlPanel.setGuess(suggestionText);
 			
+			// Move the accused person to this room
+			board.moveAccusedPlayerToRoom(suggestion, room);
+			board.repaint();
+			
 			// Handle the suggestion
 			Board.SuggestionResult result = board.handleSuggestionWithOwner(humanPlayer, suggestion);
 			if (result != null) {
-				controlPanel.setGuessResult("Disproven by " + result.getPlayer().getName());
+				// Show card to human - display the actual card
+				controlPanel.setGuessResult(result.getCard().getName() + " (from " + result.getPlayer().getName() + ")");
 				
 				// Update human player's seen cards
 				updateHumanSeenCard(result.getCard(), result.getPlayer());
@@ -413,7 +630,7 @@ public class ClueGame extends JFrame {
 					"Suggestion Disproven", 
 					JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				controlPanel.setGuessResult("No one could disprove!");
+				controlPanel.setGuessResult("No new clue");
 				JOptionPane.showMessageDialog(this, 
 					"No one could disprove your suggestion!",
 					"Suggestion Result", 

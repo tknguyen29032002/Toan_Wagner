@@ -9,9 +9,19 @@ import java.util.Set;
 public class ComputerPlayer extends Player {
     private Set<Card> seenCards;
     
+    // Flag indicating the computer should make an accusation (suggestion wasn't disproved)
+    private boolean shouldMakeAccusation;
+    // Store the suggestion that wasn't disproved (to use as accusation)
+    private Solution pendingAccusation;
+    // Flag to track if player was moved to room by suggestion (can stay next turn)
+    private boolean wasMovedBySuggestion;
+    
     public ComputerPlayer(String name, String colorStr, int row, int col) {
         super(name, colorStr, row, col);
         this.seenCards = new HashSet<>();
+        this.shouldMakeAccusation = false;
+        this.pendingAccusation = null;
+        this.wasMovedBySuggestion = false;
     }
     
     // Add card to seen list
@@ -99,5 +109,43 @@ public class ComputerPlayer extends Player {
         Random rand = new Random();
         List<BoardCell> targetList = new ArrayList<>(targets);
         return targetList.get(rand.nextInt(targetList.size()));
+    }
+    
+    // Set flag to indicate computer should make an accusation
+    // Called when a suggestion is not disproved and computer doesn't have the room card
+    public void setShouldMakeAccusation(boolean shouldMake, Solution suggestion) {
+        this.shouldMakeAccusation = shouldMake;
+        this.pendingAccusation = suggestion;
+    }
+    
+    // Check if computer should make accusation at the start of turn
+    public boolean shouldMakeAccusation() {
+        return shouldMakeAccusation && pendingAccusation != null;
+    }
+    
+    // Get the pending accusation (the suggestion that wasn't disproved)
+    public Solution getPendingAccusation() {
+        return pendingAccusation;
+    }
+    
+    // Clear accusation state (after making accusation or if disproved)
+    public void clearAccusation() {
+        this.shouldMakeAccusation = false;
+        this.pendingAccusation = null;
+    }
+    
+    // Check if player has a specific card in hand
+    public boolean hasCard(Card card) {
+        return hand.contains(card);
+    }
+    
+    // Track if player was moved to current room by suggestion
+    public void setWasMovedBySuggestion(boolean wasMoved) {
+        this.wasMovedBySuggestion = wasMoved;
+    }
+    
+    // Check if player was moved by suggestion (can stay in room)
+    public boolean wasMovedBySuggestion() {
+        return wasMovedBySuggestion;
     }
 }

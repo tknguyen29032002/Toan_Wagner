@@ -615,6 +615,39 @@ public class Board extends JPanel {
         return null; // No one could disprove
     }
     
+    /**
+     * Move the accused player to the room where the suggestion is being made
+     * @param suggestion The suggestion containing the person to move
+     * @param room The room to move the accused person to
+     * @return The player that was moved (or null if not found)
+     */
+    public Player moveAccusedPlayerToRoom(Solution suggestion, Room room) {
+        String personName = suggestion.getPerson().getName();
+        BoardCell roomCenter = room.getCenterCell();
+        
+        if (roomCenter == null) {
+            return null;
+        }
+        
+        // Find the player matching the accused person
+        for (Player player : players) {
+            if (player.getName().equals(personName)) {
+                // Move player to room center
+                player.setPosition(roomCenter.getRow(), roomCenter.getCol());
+                
+                // Mark that this player was moved by suggestion
+                if (player instanceof ComputerPlayer) {
+                    ((ComputerPlayer) player).setWasMovedBySuggestion(true);
+                } else if (player instanceof HumanPlayer) {
+                    ((HumanPlayer) player).setWasMovedBySuggestion(true);
+                }
+                
+                return player;
+            }
+        }
+        return null;
+    }
+    
 	// Test getters
     public List<Player> getPlayers() {
         return players;
@@ -670,11 +703,24 @@ public class Board extends JPanel {
         int cellWidth = width / numColumns;
         int cellHeight = height / numRows;
         
+        // Build set of room initials that are targets (for highlighting entire room)
+        Set<Character> targetRoomInitials = new HashSet<>();
+        if (targets != null) {
+            for (BoardCell target : targets) {
+                if (target.isRoomCenter()) {
+                    targetRoomInitials.add(target.getInitial());
+                }
+            }
+        }
+        
         // Draw all cells
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numColumns; col++) {
-            	boolean isTarget = targets != null && targets.contains(grid[row][col]);
-                grid[row][col].draw(g, cellWidth, cellHeight, isTarget);
+                BoardCell cell = grid[row][col];
+                // Cell is a target if it's directly in targets OR if it belongs to a target room
+                boolean isTarget = targets != null && 
+                    (targets.contains(cell) || targetRoomInitials.contains(cell.getInitial()));
+                cell.draw(g, cellWidth, cellHeight, isTarget);
             }
         }
         

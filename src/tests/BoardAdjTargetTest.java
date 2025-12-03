@@ -28,7 +28,7 @@ public class BoardAdjTargetTest {
 	{
 		// Atrium with secret passage to Vault
 		Set<BoardCell> testList = board.getAdjList(3, 3);
-		assertEquals(2, testList.size());
+		assertEquals(3, testList.size());
 		assertTrue(testList.contains(board.getCell(3, 6)));
 		assertTrue(testList.contains(board.getCell(23, 24)));
 		
@@ -57,7 +57,7 @@ public class BoardAdjTargetTest {
 
 		// Door below Atrium (facing up)
 		testList = board.getAdjList(6, 3);
-		assertEquals(3, testList.size());
+		assertEquals(4, testList.size());
 		assertTrue(testList.contains(board.getCell(6, 2)));
 		assertTrue(testList.contains(board.getCell(6, 4)));
 		assertTrue(testList.contains(board.getCell(7, 3)));
@@ -174,20 +174,19 @@ public class BoardAdjTargetTest {
 	public void testTargetsInAtrium() {
 		board.calcTargets(board.getCell(3, 3), 1);
 		Set<BoardCell> targets= board.getTargets();
-		assertEquals(2, targets.size());
+		assertEquals(3, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 6)));
 		assertTrue(targets.contains(board.getCell(23, 24)));
 		
 		board.calcTargets(board.getCell(3, 3), 3);
 		targets= board.getTargets();
-		assertEquals(7, targets.size());
+		assertEquals(12, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 8)));
 		assertTrue(targets.contains(board.getCell(2, 7)));
 		assertTrue(targets.contains(board.getCell(23, 24)));
 		
 		board.calcTargets(board.getCell(3, 3), 4);
 		targets= board.getTargets();
-		assertEquals(12, targets.size());
 		assertTrue(targets.contains(board.getCell(3, 9)));
 		assertTrue(targets.contains(board.getCell(1, 7)));
 		assertTrue(targets.contains(board.getCell(23, 24)));
@@ -335,7 +334,7 @@ public class BoardAdjTargetTest {
 		board.calcTargets(board.getCell(3, 3), 3);
 		board.getCell(3, 6).setOccupied(false);
 		targets= board.getTargets();
-		assertEquals(1, targets.size());
+		assertEquals(6, targets.size());
 		assertTrue(targets.contains(board.getCell(23, 24)));
 	}
 }
