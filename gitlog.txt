@@ -11,7 +11,7 @@ Date:   Tue Dec 3 14:20:15 2025 +0000
     fix room click to work anywhere in room
 
 commit c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Tue Dec 3 14:15:08 2025 +0000
 
     highlight entire room when its a target
@@ -23,7 +23,7 @@ Date:   Tue Dec 3 14:05:33 2025 +0000
     add human suggestion dialog and flow
 
 commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Tue Dec 3 13:55:27 2025 +0000
 
     computer suggestion and accusation logic
@@ -35,7 +35,7 @@ Date:   Tue Dec 3 13:45:18 2025 +0000
     human accusation button handler
 
 commit b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Tue Dec 3 13:35:42 2025 +0000
 
     computer accusation when solved
@@ -47,7 +47,7 @@ Date:   Tue Dec 3 13:25:55 2025 +0000
     add moveAccusedPlayerToRoom method
 
 commit e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Tue Dec 3 13:15:30 2025 +0000
 
     handleSuggestionWithOwner to track who disproved
@@ -65,31 +65,31 @@ Date:   Fri Nov 21 22:25:17 2025 +0000
     update gitlog
 
 commit c1d9de9c836f366ada301c1043f13603341bbecb
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:25:09 2025 +0000
 
     recompile class files
 
 commit c73f0955bb07c0a9d54d871a7b65e813ac323b88
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:25:03 2025 +0000
 
     add code review and flowchart docs
 
 commit 3cd4fbc8521f623a9819f8f2a69c3d93a8bb7efa
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:25:02 2025 +0000
 
     remove old GUI_Example
 
 commit 8b9883024a6f1d67ad1ed09eadfaa2a081582a71
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:25:00 2025 +0000
 
     KnownCardsPanel with color coded tracking
 
 commit 937f6abcacc08ce4136022e6f95a1739fba2846e
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:24:59 2025 +0000
 
     GameControlPanel for turn and guess display
@@ -107,13 +107,13 @@ Date:   Fri Nov 21 22:24:51 2025 +0000
     BoardCell draw method for GUI
 
 commit 26b5d96afc2b82eb84e1adc6a16accda67a95413
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:24:50 2025 +0000
 
     Room getColor for GUI display
 
 commit 4330b723f3729a21827545dfbe13313bd58d497b
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 21 22:24:45 2025 +0000
 
     Player seen cards tracking
@@ -131,7 +131,7 @@ Date:   Fri Nov 21 22:24:42 2025 +0000
     main ClueGame class with GUI
 
 commit 6e16931e8439e720b2b6e57af4cec0a1f6b57737
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 14 20:20:10 2025 +0000
 
     C21A-2: Known Cards Panel done
@@ -143,7 +143,7 @@ Date:   Mon Nov 10 20:37:41 2025 +0000
     Clue Player 2: accusations, suggestions, computer AI
 
 commit 903980193ee24d902f49dd3086a3c14ff0e1f9d4
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Nov 7 17:37:36 2025 -0700
 
     upload files
@@ -161,7 +161,7 @@ Date:   Mon Nov 3 15:15:45 2025 -0700
     simplify Room and DoorDirection comments
 
 commit 7d5d4012f2601da8215409688cad696975dce831
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Nov 3 15:15:22 2025 -0700
 
     simplify BoardCell comments
@@ -173,7 +173,7 @@ Date:   Mon Nov 3 15:14:54 2025 -0700
     simplify Board comments
 
 commit dee2e7dbc96c76a5d239acd3977b2ad4244fbd43
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Nov 3 15:14:22 2025 -0700
 
     single-line comment format
@@ -233,13 +233,13 @@ Date:   Mon Nov 3 13:34:14 2025 -0700
     fix java version to 11
 
 commit 36945bcb2604804fa080e6fe5075c7d87131a93b
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Oct 27 21:26:55 2025 -0600
 
     test review work
 
 commit 24cd3ff86f9e90ca3688082e8645ab0f4ac6717a
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Oct 27 21:25:29 2025 -0600
 
     update gitlog with BoardAdjTargetTest fixes
@@ -275,13 +275,13 @@ Date:   Mon Oct 20 10:32:50 2025 -0600
     C15A-1: skeleton classes and tests
 
 commit 5980f3d2386a8c1c2742252114f239f311732a6d
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Oct 17 17:42:59 2025 -0600
 
     update gitlog and fix testTargetsOccupied
 
 commit 8a4a5dc086191c82f01c0173a533784b5ff0dd0b
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Fri Oct 17 13:11:01 2025 -0600
 
     update gitlog
@@ -293,13 +293,13 @@ Date:   Fri Oct 17 13:08:07 2025 -0600
     fix testTargetsRoom and testTargetsOccupied
 
 commit 51e41bc84887e8f018e7d17f5cad10df40a7be8f
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Oct 13 15:33:34 2025 -0600
 
     update gitlog
 
 commit a0b13154ba07d815dd8378046ff87e43d23817d6
-Author: James Wagner <james_wagner@mine.edu>
+Author: James Wagner <james_wagner@mines.edu>
 Date:   Mon Oct 13 15:31:32 2025 -0600
 
     add gitlog.txt
